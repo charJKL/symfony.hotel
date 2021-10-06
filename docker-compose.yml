@@ -1,0 +1,38 @@
+version: "3.7"
+services:
+
+  api:
+    build:
+      context: ./api
+      dockerfile: ./dockerfile.apache+php8
+    depends_on:
+      - database
+    ports:
+      - target: 80
+        published: 8000
+        protocol: tcp
+        mode: host
+    volumes:
+      - type: bind
+        source: ./api
+        target: /var/www
+
+  database:
+    image: mysql:8
+    ports:
+      - target: 3306
+        published: 5306
+        protocol: tcp
+        mode: host
+    volumes:
+      - type: volume
+        source: symfony-hotel
+        target: /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: a3dcb4d229de6fde0db5686dee47145d
+      MYSQL_DATABASE: hotel
+      MYSQL_USER: hotel_user
+      MYSQL_PASSWORD: cb7e0f3ec835a213b005c4424c8d5775
+
+volumes:
+  symfony-hotel:
