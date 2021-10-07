@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('js/main/homepage.js') }}"></script>
+{% endblock %}
+
+
+{% block body %}
+	<h1>Welcome home</h1>
+	<section>
+		<h2>List of rooms:</h2>
+		
+	</section>
+{% endblock body %}
