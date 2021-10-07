@@ -17,6 +17,20 @@ services:
         source: ./api
         target: /var/www
 
+  web:
+    build:
+      context: ./web
+      dockerfile: ./dockerfile.apache+php8
+    ports:
+      - target: 80
+        published: 3000
+        protocol: tcp
+        mode: host
+    volumes:
+      - type: bind
+        source: ./web
+        target: /var/www
+
   database:
     image: mysql:8
     ports:
