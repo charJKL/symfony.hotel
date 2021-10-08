@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\RoomsRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -49,6 +50,30 @@ class Room
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Facility[]
+     */
+    public function getFacilities(): Collection
+    {
+        return $this->facilities;
+    }
+
+    public function addFacility(Facility $facility): self
+    {
+        if (!$this->facilities->contains($facility)) {
+            $this->facilities[] = $facility;
+        }
+
+        return $this;
+    }
+
+    public function removeFacility(Facility $facility): self
+    {
+        $this->facilities->removeElement($facility);
 
         return $this;
     }
