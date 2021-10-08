@@ -3,14 +3,15 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\OffersRepository;
+use App\Repository\RoomsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ApiResource()
- * @ORM\Entity(repositoryClass=OffersRepository::class)
+ * @ORM\Entity(repositoryClass=RoomsRepository::class)
  */
-class Offers
+class Room
 {
     /**
      * @ORM\Id
@@ -24,10 +25,16 @@ class Offers
      */
     private $name;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
+	/**
+	 * @ORM\ManyToMany(targetEntity="Facility")
+	 */
+	private $facilities;
+
+	public function __construct()
+	{
+		$this->facilities = new ArrayCollection();
+	}
+
 
     public function getId(): ?int
     {
@@ -42,18 +49,6 @@ class Offers
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
 
         return $this;
     }

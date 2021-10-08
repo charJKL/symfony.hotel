@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource()
  * @ORM\Entity(repositoryClass=FacilitiesRepository::class)
  */
-class Facilities
+class Facility
 {
     /**
      * @ORM\Id
