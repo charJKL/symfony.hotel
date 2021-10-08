@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Room;
+use App\Factory\RoomFactory;
 
 class RoomFixtures extends Fixture
 {
@@ -19,15 +20,6 @@ class RoomFixtures extends Fixture
 	
 	public function load(ObjectManager $manager)
 	{
-		$rooms = $this->list();
-		foreach($rooms as $name)
-		{
-			$room = new Room();
-			$room->setName($name);
-			$room->addFacility($this->getReference('one bed'));
-			$manager->persist($room);
-		}
-
-		$manager->flush();
+		RoomFactory::createMany(50);
 	}
 }
