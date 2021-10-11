@@ -10,7 +10,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\RoomsRepository;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * 	attributes={"security"="is_granted('ROLE_USER')"},
+ * )
  * @ORM\Entity(repositoryClass=RoomsRepository::class)
  * @UniqueEntity("number")
  */
