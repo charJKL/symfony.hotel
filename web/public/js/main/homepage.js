@@ -6,10 +6,20 @@ document.addEventListener("DOMContentLoaded", function(event)
 	
 	console.log(parseFloat("351.45"));
 	
-	const headers = new Headers();
+	{
+		const headers = new Headers();
 			headers.set('Accept', 'application/json');
-	const request = fetch(API_URL_HOST + '/api/rooms', {method: 'GET', headers});
-	const response = request.then(onResponse).then(onData);
+			headers.set('Content-Type', 'application/json');
+		const body = {login: 'admin', password: 'password'};
+		const request = fetch(API_URL_HOST + '/login', {method: 'POST', headers, body: JSON.stringify(body)});
+		const response = request.then(onResponse).then(onLogin);
+	}
+	{
+		const headers = new Headers();
+				headers.set('Accept', 'application/json');
+		const request = fetch(API_URL_HOST + '/api/rooms', {method: 'GET', headers});
+		const response = request.then(onResponse).then(onData);
+	}
 });
 
 function onResponse(response)
@@ -21,4 +31,9 @@ function onResponse(response)
 function onData(data)
 {
 	console.log(data);
+}
+
+function onLogin(data)
+{
+	console.log('logged in', data);
 }
