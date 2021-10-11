@@ -15,12 +15,12 @@ class RoomFixtures extends Fixture
 
 	public function load(ObjectManager $manager)
 	{
-		RoomFactory::createMany(15, function(){ return ['name' => RoomFactory::room(200, 299)]; });
-		RoomFactory::createMany(15, function(){ return ['name' => RoomFactory::room(300, 350)]; });
-		RoomFactory::createMany(15, function(){ return ['name' => RoomFactory::room(100, 199)]; });
-		RoomFactory::createOne(['name' => 'Gold VIP']);
-		RoomFactory::createOne(['name' => 'Silver']);
-		RoomFactory::createOne(['name' => 'Bronze south']);
-		RoomFactory::createOne(['name' => 'Bronze north']);
+		RoomFactory::createMany(15, function(){ return ['number' => RoomFactory::room(200, 299)]; });
+		RoomFactory::createMany(15, function(){ return ['number' => RoomFactory::room(300, 350)]; });
+		RoomFactory::createMany(15, function(){ return ['number' => RoomFactory::room(100, 199)]; });
+		RoomFactory::createOne(['number'=> 900, 'name' => 'Gold VIP']);
+		RoomFactory::createOne(['number'=> 901, 'name' => 'Silver']);
+		RoomFactory::createOne(['number'=> 902, 'name' => 'Bronze south']);
+		RoomFactory::createOne(['number'=> 903, 'name' => 'Bronze north']);
 	}
 }

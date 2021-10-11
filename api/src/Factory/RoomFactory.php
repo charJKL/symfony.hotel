@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Factory;
 
 use App\Entity\Room;
@@ -28,21 +27,27 @@ use Zenstruck\Foundry\Proxy;
  */
 final class RoomFactory extends ModelFactory
 {
-	public function __construct()
-	{
-		parent::__construct();
-		$faker = self::faker()->addProvider(new RoomProvider(self::faker()));
-	}
-	
 	protected function getDefaults(): array
 	{
 		return 
 		[
-			'name' =>  self::faker()->room(0, 100),
+			'number' => self::faker()->unique()->numberBetween(0, 100),
+			'name' => null,
 			'facilities' => FacilityFactory::randomRange(1, 5)
 		];
 	}
 
+	protected function initialize(): self
+	{
+		return $this->beforeInstantiate([self::class, 'beforeInstantiateRoom']);
+	}
+	
+	public static function beforeInstantiateRoom(array $attributes) : array
+	{
+		if(isset($attributes['name']) === false) $attributes['name'] = 'Room ' . $attributes['number'];
+		return $attributes;
+	}
+	
 	protected static function getClass(): string
 	{
 		return Room::class;
@@ -50,6 +55,6 @@ final class RoomFactory extends ModelFactory
 	
 	public static function room($from, $to) : string
 	{
-		return self::faker()->room($from, $to);
+		return self::faker()->unique()->numberBetween($from, $to);
 	}
 }

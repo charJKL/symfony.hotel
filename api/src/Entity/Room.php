@@ -20,7 +20,12 @@ class Room
      * @ORM\Column(type="integer")
      */
     private $id;
-
+	
+	/**
+	 * @ORM\Column(type="integer", unique=true)
+	 */ 
+	private $number;
+	
     /**
      * @ORM\Column(type="string", length=255)
      */
@@ -31,27 +36,26 @@ class Room
 	 */
 	private $facilities;
 
-	public function __construct()
-	{
+	public function __construct(int $number, string $name)
+   {
 		$this->facilities = new ArrayCollection();
-	}
-
+		$this->number = $number;
+		$this->name = $name;
+   }
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
+	 
+    public function getNumber(): ?int
+    {
+        return $this->number;
+    }
+	 
     public function getName(): ?string
     {
         return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -76,5 +80,5 @@ class Room
         $this->facilities->removeElement($facility);
 
         return $this;
-    }
+	 }
 }
