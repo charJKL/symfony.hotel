@@ -12,14 +12,15 @@ class RoomFixtures extends Fixture
 	{
 		return [FacilitiesFixture::class];
 	}
-	
-	private function list()
-	{
-		return ['201', '202', '203', '204', '301', '302', '303', '100', '101', 'gold', 'silver', 'bronze south', 'bronze north'];
-	}
-	
+
 	public function load(ObjectManager $manager)
 	{
-		RoomFactory::createMany(50);
+		RoomFactory::createMany(15, function(){ return ['name' => RoomFactory::room(200, 299)]; });
+		RoomFactory::createMany(15, function(){ return ['name' => RoomFactory::room(300, 350)]; });
+		RoomFactory::createMany(15, function(){ return ['name' => RoomFactory::room(100, 199)]; });
+		RoomFactory::createOne(['name' => 'Gold VIP']);
+		RoomFactory::createOne(['name' => 'Silver']);
+		RoomFactory::createOne(['name' => 'Bronze south']);
+		RoomFactory::createOne(['name' => 'Bronze north']);
 	}
 }

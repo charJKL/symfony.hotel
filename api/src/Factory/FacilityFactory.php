@@ -28,11 +28,17 @@ use Zenstruck\Foundry\Proxy;
  */
 final class FacilityFactory extends ModelFactory
 {
+	public function __construct()
+	{
+		parent::__construct();
+		$faker = self::faker()->addProvider(new FacilityProvider(self::faker()));
+	}
+	
 	protected function getDefaults(): array
 	{
 		return 
 		[
-			'name' => self::faker()->word(), //['one bed', 'double bed', 'two bed', 'bath', 'tv', 'wi-fi', 'sea view', 'air conditioning'],
+			'name' => self::faker()->facility(),
 			'description' => self::faker()->sentence()
 		];
 	}

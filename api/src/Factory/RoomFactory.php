@@ -28,32 +28,28 @@ use Zenstruck\Foundry\Proxy;
  */
 final class RoomFactory extends ModelFactory
 {
-    public function __construct()
-    {
-        parent::__construct();
-
-        // TODO inject services if required (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services)
-    }
-
+	public function __construct()
+	{
+		parent::__construct();
+		$faker = self::faker()->addProvider(new RoomProvider(self::faker()));
+	}
+	
 	protected function getDefaults(): array
 	{
-		return [
-				// TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-				'name' => self::faker()->text(),
-				'facilities' => FacilityFactory::randomRange(0, 5)
+		return 
+		[
+			'name' =>  self::faker()->room(0, 100),
+			'facilities' => FacilityFactory::randomRange(1, 5)
 		];
 	}
 
-    protected function initialize(): self
-    {
-        // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-        return $this
-            // ->afterInstantiate(function(Room $room) {})
-        ;
-    }
-
-    protected static function getClass(): string
-    {
-        return Room::class;
-    }
+	protected static function getClass(): string
+	{
+		return Room::class;
+	}
+	
+	public static function room($from, $to) : string
+	{
+		return self::faker()->room($from, $to);
+	}
 }
