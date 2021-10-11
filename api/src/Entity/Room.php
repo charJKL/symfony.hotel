@@ -1,16 +1,18 @@
 <?php
-
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\RoomsRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\RoomsRepository;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass=RoomsRepository::class)
+ * @UniqueEntity("number")
  */
 class Room
 {
@@ -23,13 +25,15 @@ class Room
 	
 	/**
 	 * @ORM\Column(type="integer", unique=true)
+	 * @Assert\NotBlank()
 	 */ 
 	private $number;
 	
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 * @Assert\NotBlank()
+	 */
+	private $name;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Facility")

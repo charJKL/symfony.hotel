@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\FacilitiesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\FacilitiesRepository;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass=FacilitiesRepository::class)
+ * @UniqueEntity("name")
  */
 class Facility
 {
@@ -21,6 +24,7 @@ class Facility
 
     /**
      * @ORM\Column(type="string", length=255)
+	  * @Assert\NotBlank
      */
     private $name;
 
