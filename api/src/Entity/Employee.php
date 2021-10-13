@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\EmployeeRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\EmployeeRepository;
 
 /**
+ * @ApiResource()
  * @ORM\Entity(repositoryClass=EmployeeRepository::class)
  */
 class Employee implements UserInterface, PasswordAuthenticatedUserInterface
