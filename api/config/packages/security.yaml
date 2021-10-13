@@ -6,6 +6,9 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
         App\Entity\Employee:
             algorithm: auto
+        App\Entity\Guest:
+            algorithm: auto
+
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -13,6 +16,11 @@ security:
         employee_provider:
             entity:
                 class: App\Entity\Employee
+                property: uuid
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\Guest
                 property: uuid
     firewalls:
         dev:
