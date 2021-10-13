@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\OffersRepository;
+use App\Repository\OfferRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
- * @ORM\Entity(repositoryClass=OffersRepository::class)
+ * @ORM\Entity(repositoryClass=OfferRepository::class)
  */
 class Offer
 {

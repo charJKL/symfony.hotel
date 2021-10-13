@@ -7,13 +7,13 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Repository\RoomsRepository;
+use App\Repository\RoomRepository;
 
 /**
  * @ApiResource(
  * 	attributes={"security"="is_granted('ROLE_USER')"},
  * )
- * @ORM\Entity(repositoryClass=RoomsRepository::class)
+ * @ORM\Entity(repositoryClass=RoomRepository::class)
  * @UniqueEntity("number")
  */
 class Room
@@ -43,11 +43,11 @@ class Room
 	private $facilities;
 
 	public function __construct(int $number, string $name)
-   {
-		$this->facilities = new ArrayCollection();
-		$this->number = $number;
-		$this->name = $name;
-   }
+         {
+      		$this->facilities = new ArrayCollection();
+      		$this->number = $number;
+      		$this->name = $name;
+         }
 
     public function getId(): ?int
     {
@@ -87,4 +87,18 @@ class Room
 
         return $this;
 	 }
+
+    public function setNumber(int $number): self
+    {
+        $this->number = $number;
+
+        return $this;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
 }

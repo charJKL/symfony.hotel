@@ -6,11 +6,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\FacilitiesRepository;
+use App\Repository\FacilitysRepository;
 
 /**
  * @ApiResource()
- * @ORM\Entity(repositoryClass=FacilitiesRepository::class)
+ * @ORM\Entity(repositoryClass=FacilityRepository::class)
  * @UniqueEntity("name")
  */
 class Facility
