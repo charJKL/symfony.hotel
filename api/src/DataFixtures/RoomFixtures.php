@@ -2,11 +2,12 @@
 namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\Room;
 use App\Factory\RoomFactory;
 
-class RoomFixtures extends Fixture
+
+class RoomFixtures extends Fixture implements DependentFixtureInterface
 {
 	public function getDependencies()
 	{
@@ -22,5 +23,10 @@ class RoomFixtures extends Fixture
 		RoomFactory::createOne(['number'=> 901, 'name' => 'Silver']);
 		RoomFactory::createOne(['number'=> 902, 'name' => 'Bronze south']);
 		RoomFactory::createOne(['number'=> 903, 'name' => 'Bronze north']);
+	}
+	
+	public static function byNumber(int $number)
+	{
+		return RoomFactory::findBy(['number' => $number]);
 	}
 }
