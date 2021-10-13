@@ -1,12 +1,12 @@
 <?php
-
 namespace App\Factory;
 
-use App\Entity\Facility;
-use App\Repository\FacilitiesRepository;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
+use App\Factory\Utils\FacilityProvider;
+use App\Repository\FacilitiesRepository;
+use App\Entity\Facility;
 
 /**
  * @extends ModelFactory<Facility>
@@ -31,7 +31,7 @@ final class FacilityFactory extends ModelFactory
 	public function __construct()
 	{
 		parent::__construct();
-		$faker = self::faker()->addProvider(new FacilityProvider(self::faker()));
+		self::faker()->addProvider(new FacilityProvider(self::faker()));
 	}
 	
 	protected function getDefaults(): array

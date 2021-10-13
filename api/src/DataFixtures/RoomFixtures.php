@@ -3,6 +3,7 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ObjectManager;
 use App\Factory\RoomFactory;
 
@@ -27,6 +28,7 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
 	
 	public static function byNumber(int $number)
 	{
-		return RoomFactory::findBy(['number' => $number]);
+		$criteria = Criteria::create()->andWhere(Criteria::expr()->neq('number', null));
+		return RoomFactory::findOrCreate(['number' => $number]);
 	}
 }

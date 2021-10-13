@@ -27,6 +27,11 @@ use Zenstruck\Foundry\Proxy;
  */
 final class RoomFactory extends ModelFactory
 {
+	protected static function getClass(): string
+	{
+		return Room::class;
+	}
+	
 	protected function getDefaults(): array
 	{
 		return 
@@ -46,11 +51,6 @@ final class RoomFactory extends ModelFactory
 	{
 		if(isset($attributes['name']) === false) $attributes['name'] = 'Room ' . $attributes['number'];
 		return $attributes;
-	}
-	
-	protected static function getClass(): string
-	{
-		return Room::class;
 	}
 	
 	public static function room($from, $to) : string

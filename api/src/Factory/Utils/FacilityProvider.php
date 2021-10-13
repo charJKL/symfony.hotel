@@ -1,5 +1,5 @@
 <?php
-namespace App\Factory;
+namespace App\Factory\Utils;
 
 use Faker\Provider\Base;
 use RangeException;
