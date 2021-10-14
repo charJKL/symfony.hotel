@@ -57,11 +57,6 @@ final class AccommodationFactory extends ModelFactory
 		return $this->addState(['status' => $status]);
 	}
 	
-	public function forRooms($room) : self
-	{
-		return $this->addState(['rooms' => [$room]]);
-	}
-	
 	public function forDays($from, $days) : self
 	{
 		$checkInAt = self::faker()->exactDateTime($from);
@@ -76,8 +71,13 @@ final class AccommodationFactory extends ModelFactory
 		return $this->addState(['checkInAt' => $checkInAt, 'checkOutAt'=> $checkOutAt]);
 	}
 	
-	public function withGuests($guest) : self
+	public function withRooms(array $room) : self
 	{
-		return $this->addState(['guests' => [$guest]]);
+		return $this->addState(['rooms' => $room]);
+	}
+	
+	public function withGuests(array $guest) : self
+	{
+		return $this->addState(['guests' => $guest]);
 	}
 }

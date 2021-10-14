@@ -3,7 +3,9 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Zenstruck\Foundry\RepositoryProxy;
 use App\Factory\GuestFactory;
+use RuntimeException;
 
 class GuestFixtures extends Fixture
 {
@@ -17,7 +19,6 @@ class GuestFixtures extends Fixture
 		
 		GuestFactory::new()->withEmail()->create();
 		GuestFactory::new()->withEmail()->create();
-		
 		GuestFactory::new()->withPhone()->create();
 		GuestFactory::new()->withPhone()->create();
 		
@@ -25,13 +26,15 @@ class GuestFixtures extends Fixture
 		GuestFactory::new()->withPersonal()->withDocumentId()->withPhone()->create();
 	}
 	
-	public static function byPhone()
+	public static function byPhone($count = 1, $phone = RepositoryProxy::IS_NOT_NULL) : array
 	{
-		return GuestFactory::random();
+		$attributes = ['phone' => $phone];
+		return GuestFactory::randomSet($count, $attributes);
 	}
 	
-	public static function byPersonal()
+	public static function byPersonal($count = 1): array
 	{
-		return GuestFactory::random();
+		$attributes = ['name'=> RepositoryProxy::IS_NOT_NULL, 'surname'=> RepositoryProxy::IS_NOT_NULL, 'nationality' => RepositoryProxy::IS_NOT_NULL];
+		return GuestFactory::randomSet($count, $attributes);
 	}
 }
