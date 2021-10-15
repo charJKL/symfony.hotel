@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +9,16 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AccommodationRepository;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * 	collectionOperations = {
+ * 		"get",
+ * 		"post" = { "denormalization_context"={"groups"={"accommodation:create"}} },
+ * 	},
+ * 	itemOperations = {
+ * 		"get",
+ * 		"patch"
+ * 	}
+ * )
  * @ORM\Entity(repositoryClass=AccommodationRepository::class)
  */
 class Accommodation
@@ -22,16 +32,19 @@ class Accommodation
 	
 	/**
 	 * @ORM\Column(type="integer", options={"unsigned":true})
+	 * 
 	 */
 	private $status;
 	
 	/**
 	 * @ORM\Column(type="datetime")
+	 * @Groups({"accommodation:create"})
 	 */
 	private $checkInAt;
 
 	/**
 	 * @ORM\Column(type="datetime")
+	 * @Groups({"accommodation:create"})
 	 */
 	private $checkOutAt;
 
@@ -42,11 +55,13 @@ class Accommodation
 	
 	/**
 	 * @ORM\Column(type="integer", options={"unsigned":true})
+	 * @Groups({"accommodation:create"})
 	 */
 	private $roomsAmount;
 
 	/**
 	 * @ORM\Column(type="integer", options={"unsigned":true})
+	 * @Groups({"accommodation:create"})
 	 */
 	private $peopleAmount;
 	
@@ -56,7 +71,8 @@ class Accommodation
 	private $rooms;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="App\Entity\Guest")
+	 * @ORM\ManyToMany(targetEntity="App\Entity\Guest", cascade={"persist"})
+	 * @Groups({"accommodation:create"})
 	 */ 
 	private $guests;
 	

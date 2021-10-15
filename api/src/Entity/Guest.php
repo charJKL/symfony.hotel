@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\GuestRepository;
@@ -33,20 +34,22 @@ class Guest
      */
     private $nationality;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $email;
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 * @Groups({"accommodation:create"})
+	 */
+	private $email;
 
 	/**
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $documentId;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $phone;
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 * @Groups({"accommodation:create"})
+	 */
+   private $phone;
 
     public function getId(): ?int
     {
