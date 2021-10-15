@@ -17,18 +17,18 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
 
 	public function load(ObjectManager $manager)
 	{
-		RoomFactory::createMany(15, function(){ return ['number' => RoomFactory::room(200, 299)]; });
-		RoomFactory::createMany(15, function(){ return ['number' => RoomFactory::room(300, 350)]; });
-		RoomFactory::createMany(15, function(){ return ['number' => RoomFactory::room(100, 199)]; });
-		RoomFactory::createOne(['number'=> 900, 'name' => 'Gold VIP']);
-		RoomFactory::createOne(['number'=> 901, 'name' => 'Silver']);
-		RoomFactory::createOne(['number'=> 902, 'name' => 'Bronze south']);
-		RoomFactory::createOne(['number'=> 903, 'name' => 'Bronze north']);
+		for($x = 0; $x < 15; $x++) RoomFactory::new()->withNumber(210, 299)->create();
+		for($x = 0; $x < 15; $x++) RoomFactory::new()->withNumber(300, 350)->create();
+		for($x = 0; $x < 15; $x++) RoomFactory::new()->withNumber(110, 199)->create();
 		
-		// TODO This may cause SQL error for UNIQUE key constraint.
-		RoomFactory::createOne(['number'=> 201]);
-		RoomFactory::createOne(['number'=> 202]);
-		RoomFactory::createOne(['number'=> 105]);
+		RoomFactory::new()->withNumber(900)->withName('Gold VIP')->create();
+		RoomFactory::new()->withNumber(901)->withName('Silver')->create();
+		RoomFactory::new()->withNumber(902)->withName('Bronze south')->create();
+		RoomFactory::new()->withNumber(903)->withName('Bronze north')->create();
+		
+		RoomFactory::new()->withNumber(201)->create();
+		RoomFactory::new()->withNumber(202)->create();
+		RoomFactory::new()->withNumber(105)->create();
 	}
 	
 	public static function byNumber(int $count = 1, int $number = RepositoryProxy::IS_NOT_NULL) : array

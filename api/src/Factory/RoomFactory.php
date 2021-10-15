@@ -6,6 +6,7 @@ use App\Repository\RoomsRepository;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
+use BadFunctionCallException;
 
 /**
  * @extends ModelFactory<Room>
@@ -41,8 +42,33 @@ final class RoomFactory extends ModelFactory
 			'facilities' => FacilityFactory::randomRange(1, 5)
 		];
 	}
-
-	protected function initialize(): self
+	
+	public function __call(string $name, array $arguments) : mixed
+	{
+		$withNumber = 'withNumber';
+		$args = count($arguments);
+		if($name === $withNumber && $args === 1) return $this->withNumberExact(...$arguments);
+		if($name === $withNumber && $args === 2) return $this->withNumberBetween(...$arguments);
+		
+		throw new BadFunctionCallException('Call to undefined method "'.self::class.'::'.$name.'".');
+	}
+	
+	public function withName(string $name) : self
+	{
+		return $this->addState(['name' => $name]);
+	}
+	
+	private function withNumberExact(int $number) : self
+	{
+		return $this->addState(['number' => $number]);
+	}
+	
+	private function withNumberBetween(int $from, int $to) : self
+	{
+		return $this->addState(['number' => self::faker()->unique()->numberBetween($from, $to)]);
+	}
+	
+	protected function initialize() : self
 	{
 		return $this->beforeInstantiate([self::class, 'beforeInstantiateRoom']);
 	}
@@ -51,10 +77,5 @@ final class RoomFactory extends ModelFactory
 	{
 		if(isset($attributes['name']) === false) $attributes['name'] = 'Room ' . $attributes['number'];
 		return $attributes;
-	}
-	
-	public static function room($from, $to) : string
-	{
-		return self::faker()->unique()->numberBetween($from, $to);
 	}
 }
