@@ -32,24 +32,23 @@ class Accommodation
 	
 	/**
 	 * @ORM\Column(type="integer", options={"unsigned":true})
-	 * 
 	 */
 	private $status;
 	
 	/**
-	 * @ORM\Column(type="datetime")
+	 * @ORM\Column(type="datetimetz", options={"check": "CONSTRAINT CHECK (check_in_at > DATE_ADD(CURRENT_TIMESTAMP, INTERVAL -1 HOUR))"})
 	 * @Groups({"accommodation:create"})
 	 */
 	private $checkInAt;
 
 	/**
-	 * @ORM\Column(type="datetime")
+	 * @ORM\Column(type="datetimetz")
 	 * @Groups({"accommodation:create"})
 	 */
 	private $checkOutAt;
 
 	/**
-	 * @ORM\Column(type="datetime", nullable=true)
+	 * @ORM\Column(type="datetimetz", nullable=true)
 	 */
 	private $bookAt;
 	
