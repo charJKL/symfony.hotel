@@ -7,6 +7,7 @@ use Zenstruck\Foundry\Proxy;
 use App\Entity\Accommodation;
 use App\Factory\Utils\DateTimeProvider;
 use App\Repository\AccommodationRepository;
+use DateTime;
 
 /**
  * @extends ModelFactory<Accommodation>
@@ -60,7 +61,9 @@ final class AccommodationFactory extends ModelFactory
 	public function forDays($from, $days) : self
 	{
 		$checkInAt = self::faker()->exactDateTime($from);
-		$checkOutAt = self::faker()->dateTimeInInterval("+$days days", '+60 minutes');
+		$checkOutAtLatest = DateTime::createFromInterface($checkInAt)->modify("+$days days");
+		$checkOutAt = self::faker()->dateTimeBetween($checkInAt, $checkOutAtLatest);
+		
 		return $this->addState(['checkInAt' => $checkInAt, 'checkOutAt' => $checkOutAt]);
 	}
 	
