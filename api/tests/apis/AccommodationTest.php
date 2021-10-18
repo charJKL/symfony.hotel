@@ -4,6 +4,7 @@ namespace Tests\Apis;
 use App\Test\ApiTestCase;
 use App\Entity\Accommodation;
 use App\Entity\Guest;
+use Doctrine\Common\Collections\Criteria;
 
 class AccommodationTest extends ApiTestCase
 {
@@ -30,7 +31,11 @@ class AccommodationTest extends ApiTestCase
 		$this->assertEquals($accommodation->getStatus(), Accommodation::BOOKED);
 		
 		// Check if corresponding `Guest` was created:
-		$guest = $this->em(Guest::class)->findAll()[0];
+		$query = $this->em(Guest::class)->createQueryBuilder('g');
+		if(isset($json['guests'][0]['email'])) $query->orWhere('g.email = :email')->setParameter('email', $json['guests'][0]['email']);
+		if(isset($json['guests'][0]['phone'])) $query->orWhere('g.phone = :phone')->setParameter('phone', $json['guests'][0]['phone']);
+		$guest = $query->getQuery()->getOneOrNullResult();
+		
 		$this->assertNotNull($guest);
 		// $this->assertObjectEquals($guest, $accommodation->guests()[0], 'method');
 	}

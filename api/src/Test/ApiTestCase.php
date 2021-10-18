@@ -28,9 +28,9 @@ abstract class ApiTestCase extends ApiPlatformTestCase
 		return static::createClient()->request($method, $uri, $headers + $data);
 	}
 	
-	protected function em(string $repository)
+	protected function em(string $repository = null)
 	{
+		if($repository === null) return static::getContainer()->get(EntityManagerInterface::class);
 		return static::getContainer()->get(EntityManagerInterface::class)->getRepository($repository);
 	}
-	
 }
