@@ -1,10 +1,9 @@
 <?php
-namespace Tests\Apis;
+namespace Tests\Api;
 
 use App\Test\ApiTestCase;
 use App\Entity\Accommodation;
 use App\Entity\Guest;
-use Doctrine\Common\Collections\Criteria;
 
 class AccommodationTest extends ApiTestCase
 {
@@ -37,6 +36,6 @@ class AccommodationTest extends ApiTestCase
 		$guest = $query->getQuery()->getOneOrNullResult();
 		
 		$this->assertNotNull($guest);
-		// $this->assertObjectEquals($guest, $accommodation->guests()[0], 'method');
+		$this->assertEntityEquals($guest, $accommodation->getGuests()[0]);
 	}
 }
