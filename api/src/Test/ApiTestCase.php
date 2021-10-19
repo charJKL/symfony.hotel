@@ -4,7 +4,7 @@ namespace App\Test;
 use Symfony\Component\HttpFoundation\Response;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase as ApiPlatformTestCase;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Test\Constraint\EntityMatches;
+use App\Test\Constraint\EntityShallowMatch;
 
 abstract class ApiTestCase extends ApiPlatformTestCase
 {
@@ -35,8 +35,8 @@ abstract class ApiTestCase extends ApiPlatformTestCase
 		return static::getContainer()->get(EntityManagerInterface::class)->getRepository($repository);
 	}
 	
-	protected function assertEntityEquals($first, $second)
+	protected function assertEntityEqualsShallow($first, $second)
 	{
-		static::assertThat($second, new EntityMatches($first));
+		static::assertThat($second, new EntityShallowMatch($first));
 	}
 }

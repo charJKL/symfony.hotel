@@ -4,7 +4,7 @@ namespace App\Test\Constraint;
 use PHPUnit\Framework\Constraint\Constraint;
 use \ReflectionClass ;
 
-class EntityMatches extends Constraint
+class EntityShallowMatch extends Constraint
 {
 	private $entity = null;
 	private $reasons = [];

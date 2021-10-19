@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Test;
 
-use App\Test\Constraint\EntityMatches;
+use App\Test\Constraint\EntityShallowMatch;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\AssertionFailedError;
 use stdClass;
@@ -36,7 +36,7 @@ class SecondDummyClass
 	}
 }
 
-class EntityMatchesConstraintTest extends TestCase
+class EntityShallowMatchConstraintTest extends TestCase
 {
 	public function testFailWithWrongTypes()
 	{
@@ -46,7 +46,7 @@ class EntityMatchesConstraintTest extends TestCase
 		$this->expectException(AssertionFailedError::class);
 		$this->expectExceptionMessage("Object to compare to must be an instance of class, `integer` was given.");
 	
-		self::assertThat($secondObject, new EntityMatches($firstObject));
+		self::assertThat($secondObject, new EntityShallowMatch($firstObject));
 	}
 	
 	public function testFailWithWrongClassTypes()
@@ -57,7 +57,7 @@ class EntityMatchesConstraintTest extends TestCase
 		$this->expectException(AssertionFailedError::class);
 		$this->expectExceptionMessage("Object type `Tests\Test\FirstDummyClass#12` is not the same as object type `Tests\Test\SecondDummyClass`.");
 		
-		self::assertThat($secondObject, new EntityMatches($firstObject));
+		self::assertThat($secondObject, new EntityShallowMatch($firstObject));
 	}
 	
 	public function testFailWithWrongPropertyTypes()
@@ -69,7 +69,7 @@ class EntityMatchesConstraintTest extends TestCase
 		$this->expectExceptionMessage("Property value Tests\Test\FirstDummyClass#16.firstPrivateProperty{array} is not equal Tests\Test\FirstDummyClass#12.firstPrivateProperty{string}.");
 		$this->expectExceptionMessage("Property value Tests\Test\FirstDummyClass#16.secondProtectedProperty{integer} is not equal Tests\Test\FirstDummyClass#12.secondProtectedProperty{object}.");
 		
-		self::assertThat($secondObject, new EntityMatches($firstObject));
+		self::assertThat($secondObject, new EntityShallowMatch($firstObject));
 	}
 	
 	public function testFailWithWrongPropertyValues()
@@ -82,7 +82,7 @@ class EntityMatchesConstraintTest extends TestCase
 		$this->expectExceptionMessage("Property value Tests\Test\FirstDummyClass#17.secondProtectedProperty{1205} is not equal Tests\Test\FirstDummyClass#25.secondProtectedProperty{1204}.");
 		$this->expectExceptionMessage("Property value Tests\Test\FirstDummyClass#17.thirdPublicProperty{object} is not equal Tests\Test\FirstDummyClass#25.thirdPublicProperty{NULL}.");
 				
-		self::assertThat($secondObject, new EntityMatches($firstObject));
+		self::assertThat($secondObject, new EntityShallowMatch($firstObject));
 	}
 	
 	public function testValuesCheckForComplexTypesWillBeSkipped()
@@ -90,6 +90,6 @@ class EntityMatchesConstraintTest extends TestCase
 		$firstObject = new FirstDummyClass(1, ['blue','red'], new stdClass, 12.7);
 		$secondObject = new FirstDummyClass(1, [], new SecondDummyClass(), 12.7);
 		
-		self::assertThat($secondObject, new EntityMatches($firstObject));
+		self::assertThat($secondObject, new EntityShallowMatch($firstObject));
 	}
 }

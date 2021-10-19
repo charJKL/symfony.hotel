@@ -34,8 +34,7 @@ class AccommodationTest extends ApiTestCase
 		if(isset($json['guests'][0]['email'])) $query->orWhere('g.email = :email')->setParameter('email', $json['guests'][0]['email']);
 		if(isset($json['guests'][0]['phone'])) $query->orWhere('g.phone = :phone')->setParameter('phone', $json['guests'][0]['phone']);
 		$guest = $query->getQuery()->getOneOrNullResult();
-		
 		$this->assertNotNull($guest);
-		$this->assertEntityEquals($guest, $accommodation->getGuests()[0]);
+		$this->assertEntityEqualsShallow($accommodation->getGuests()[0], $guest);
 	}
 }
