@@ -16,7 +16,7 @@ use App\Repository\AccommodationRepository;
  * 	},
  * 	itemOperations = {
  * 		"get",
- * 		"patch"
+ * 		"patch" = { "security" = "is_granted('ROLE_USER')" }
  * 	}
  * )
  * @ORM\Entity(repositoryClass=AccommodationRepository::class)
