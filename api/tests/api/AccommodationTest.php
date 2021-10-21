@@ -37,4 +37,14 @@ class AccommodationTest extends ApiTestCase
 		$this->assertNotNull($guest);
 		$this->assertEntityEqualsShallow($accommodation->getGuests()[0], $guest);
 	}
+	
+	public function testYouCantDeleteReservation()
+	{
+		$this->request(self::DELETE, '/api/accommodations/5');
+		$this->assertResponseStatusCodeSame(self::HTTP_405_NOT_ALLOWED);
+	}
+	
+	
+	
+	
 }
