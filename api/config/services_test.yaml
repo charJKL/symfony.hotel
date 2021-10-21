@@ -1,0 +1,6 @@
+
+services:
+    logger:
+      class: Symfony\Component\HttpKernel\Log\Logger
+      arguments:
+          $minLevel: 'emergency'
