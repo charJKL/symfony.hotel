@@ -1,9 +1,11 @@
 <?php
 namespace Tests\Api;
 
+use App\DataFixtures\AccomodationFixtures;
 use App\Test\ApiTestCase;
 use App\Entity\Accommodation;
 use App\Entity\Guest;
+use App\Factory\AccommodationFactory;
 
 class AccommodationTest extends ApiTestCase
 {
@@ -44,7 +46,19 @@ class AccommodationTest extends ApiTestCase
 		$this->assertResponseStatusCodeSame(self::HTTP_405_NOT_ALLOWED);
 	}
 	
-	
-	
-	
+	public function testConfirmAccommodationRequireLogin()
+	{
+		$accommodation = AccommodationFactory::new()->status(Accommodation::BOOKED)->create();
+
+		$json = ['status' => Accommodation::CONFIRMED];
+		$this->request(self::PATCH, 'api/accommodations/'.$accommodation->getId(), [], $json);
+		$this->assertResponseStatusCodeSame(self::HTTP_401_UNAUTHORIZED);
+
+		$this->request(self::PATCH, 'api/accommodations/'.$accommodation->getId(), [], $json);
+		$this->assertResponseStatusCodeSame(self::HTTP_201_HTTP_CREATED);
+		
+		// Assert that status was updated:
+		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
+		$this->assertEquals(Accommodation::CONFIRMED, $accommodation->getStatus(), 'Status of accommodation was not updated.');
+	}
 }
