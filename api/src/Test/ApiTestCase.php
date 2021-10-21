@@ -5,11 +5,13 @@ use Symfony\Component\HttpFoundation\Response;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase as ApiPlatformTestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Test\Constraint\EntityShallowMatch;
+use PhpParser\Node\Expr\FuncCall;
 
 abstract class ApiTestCase extends ApiPlatformTestCase
 {
 	const HTTP_200_OK = Response::HTTP_OK;
 	const HTTP_201_HTTP_CREATED = Response::HTTP_CREATED;
+	const HTTP_401_UNAUTHORIZED = Response::HTTP_UNAUTHORIZED;
 	const HTTP_404_NOT_FOUND = Response::HTTP_NOT_FOUND;
 	const HTTP_405_NOT_ALLOWED = Response::HTTP_METHOD_NOT_ALLOWED;
 	
@@ -25,9 +27,25 @@ abstract class ApiTestCase extends ApiPlatformTestCase
 	
 	protected function request(string $method, string $uri, array $headers = [], array $data = [])
 	{
-		if($method === self::POST_JSON) return static::createClient()->request(self::POST, $uri, $headers + ['json' => $data]);
-		if($method === self::POST) return static::createClient()->request(self::POST, $uri, $headers + ['body' => $data]);
-		return static::createClient()->request($method, $uri, $headers + $data);
+		$options = [];
+		$options['headers'] = $headers;
+		
+		if($method === self::POST)
+		{
+			$options['body'] = $data;
+		}
+		if($method === self::POST_JSON)
+		{
+			$method = self::POST;
+			$options['json'] = $data;
+		}
+		if($method === self::PATCH)
+		{
+			$options['headers'][self::HEADER_CONTENT_TYPE] = 'application/merge-patch+json';
+			$options['json'] = $data;
+		}
+		
+		return static::createClient()->request($method, $uri, $options);
 	}
 	
 	protected function em(string $repository = null)
@@ -40,4 +58,14 @@ abstract class ApiTestCase extends ApiPlatformTestCase
 	{
 		static::assertThat($second, new EntityShallowMatch($first));
 	}
+	
+	/**
+	 * Function used to 
+	 */ 
+	protected function commitAndDie()
+	{
+		\DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver::commit();
+		die;
+	}
+	
 }
