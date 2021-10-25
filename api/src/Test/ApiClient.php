@@ -3,6 +3,7 @@ namespace App\Test;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Response as PlatformResponse;
+use Zenstruck\Foundry\Proxy as FoundryProxy;
 
 class ApiClient implements ApiClientInterface
 {
@@ -33,6 +34,7 @@ class ApiClient implements ApiClientInterface
 	
 	public function logIn(object $user, string $firewallContext = 'main') : self
 	{
+		$user = ($user instanceof FoundryProxy) ? $user->object() : $user; // TODO remove hard coupling to Zenstruck\Foundry\Proxy bundle.
 		$this->client->getKernelBrowser()->loginUser($user, $firewallContext);
 		return $this;
 	}

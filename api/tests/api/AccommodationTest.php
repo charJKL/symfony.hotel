@@ -57,7 +57,7 @@ class AccommodationTest extends ApiTestCase
 		$this->assertResponseStatusCodeSame(http::HTTP_401_UNAUTHORIZED);
 		
 		$client = self::createApiClient();
-		$client->logIn($employee->object());
+		$client->logIn($employee);
 		$client->request(http::PATCH, 'api/accommodations/'.$accommodation->getId(), [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
 		
