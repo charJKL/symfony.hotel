@@ -1,11 +1,12 @@
 <?php
 namespace Tests\Api;
 
-use App\DataFixtures\AccomodationFixtures;
 use App\Test\ApiTestCase;
+use App\Test\ApiClientInterface as http;
+use App\Factory\AccommodationFactory;
+use App\Factory\EmployeeFactory;
 use App\Entity\Accommodation;
 use App\Entity\Guest;
-use App\Factory\AccommodationFactory;
 
 class AccommodationTest extends ApiTestCase
 {
@@ -20,8 +21,8 @@ class AccommodationTest extends ApiTestCase
 	 */
 	public function testOnlyEmailOrPhoneIsRequiredToMakeReservation(array $json)
 	{
-		$this->request(self::POST_JSON, '/api/accommodations', [], $json);
-		$this->assertResponseStatusCodeSame(self::HTTP_201_HTTP_CREATED);
+		$this->request(http::POST, '/api/accommodations', [], $json);
+		$this->assertResponseStatusCodeSame(http::HTTP_201_HTTP_CREATED);
 		
 		// One accommodation record should be added:
 		$accommodations = $this->em(Accommodation::class)->findAll();
@@ -42,20 +43,23 @@ class AccommodationTest extends ApiTestCase
 	
 	public function testYouCantDeleteReservation()
 	{
-		$this->request(self::DELETE, '/api/accommodations/5');
-		$this->assertResponseStatusCodeSame(self::HTTP_405_NOT_ALLOWED);
+		$this->request(http::DELETE, '/api/accommodations/5');
+		$this->assertResponseStatusCodeSame(http::HTTP_405_NOT_ALLOWED);
 	}
 	
 	public function testConfirmAccommodationRequireLogin()
 	{
+		$employee = EmployeeFactory::new()->uuid('dummy')->password('password1')->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::BOOKED)->create();
-
+		
 		$json = ['status' => Accommodation::CONFIRMED];
-		$this->request(self::PATCH, 'api/accommodations/'.$accommodation->getId(), [], $json);
-		$this->assertResponseStatusCodeSame(self::HTTP_401_UNAUTHORIZED);
-
-		$this->request(self::PATCH, 'api/accommodations/'.$accommodation->getId(), [], $json);
-		$this->assertResponseStatusCodeSame(self::HTTP_201_HTTP_CREATED);
+		$this->request(http::PATCH, 'api/accommodations/'.$accommodation->getId(), [], $json);
+		$this->assertResponseStatusCodeSame(http::HTTP_401_UNAUTHORIZED);
+		
+		$client = self::createApiClient();
+		$client->logIn($employee->object());
+		$client->request(http::PATCH, 'api/accommodations/'.$accommodation->getId(), [], $json);
+		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
 		
 		// Assert that status was updated:
 		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
