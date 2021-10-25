@@ -7,6 +7,7 @@ use App\Factory\AccommodationFactory;
 use App\Factory\EmployeeFactory;
 use App\Entity\Accommodation;
 use App\Entity\Guest;
+use App\Factory\GuestFactory;
 
 class AccommodationTest extends ApiTestCase
 {
@@ -65,4 +66,26 @@ class AccommodationTest extends ApiTestCase
 		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
 		$this->assertEquals(Accommodation::CONFIRMED, $accommodation->getStatus(), 'Status of accommodation was not updated.');
 	}
+	
+	public function testCheckInAccommodationRequireGuestFullInformation()
+	{
+		$employee = EmployeeFactory::new()->create();
+		$guest = GuestFactory::new()->withEmail()->create();
+		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->create();
+		
+		$properties = ['name' => 'Joe', 'surname' => 'Doe', 'nationality' => 'PL', 'document_id' => 'ASD5567'];
+		$json = ['status' => Accommodation::CHECKED_IN, 'guests' => [$properties]];
+		
+		$client = self::createApiClient();
+		$client->logIn($employee);
+		$client->request(http::PATCH, 'api/accommodations/'.$accommodation->getId(), [], $json);
+		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
+		
+		$guest = $this->em(Guest::class)->find($guest->getId());
+		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
+		$this->assertEquals(Accommodation::CHECKED_IN, $accommodation->getStatus());
+		$this->assertEntityProperties($guest, $properties);
+		
+	}
+	
 }

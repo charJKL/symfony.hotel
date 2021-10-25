@@ -29,6 +29,11 @@ abstract class ApiTestCase extends ApiPlatformTestCase
 		static::assertThat($second, new EntityShallowMatch($first));
 	}
 	
+	protected function assertEntityProperties($entity, $array)
+	{
+		return false;
+	}
+	
 	/**
 	 * Function used to 
 	 */ 
