@@ -71,9 +71,11 @@ class AccommodationTest extends ApiTestCase
 	{
 		$employee = EmployeeFactory::new()->create();
 		$guest = GuestFactory::new()->withEmail()->create();
-		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->create();
+		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withGuests([$guest])->create();
 		
-		$properties = ['name' => 'Joe', 'surname' => 'Doe', 'nationality' => 'PL', 'document_id' => 'ASD5567'];
+		$iri = $this->getIri($guest->object());
+		var_dump($iri);
+		$properties = ['@id'=> $iri,'name' => 'Joe', 'surname' => 'Doe', 'nationality' => 'PL', 'document_id' => 'ASD5567'];
 		$json = ['status' => Accommodation::CHECKED_IN, 'guests' => [$properties]];
 		
 		$client = self::createApiClient();

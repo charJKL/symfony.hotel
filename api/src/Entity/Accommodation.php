@@ -16,7 +16,7 @@ use App\Repository\AccommodationRepository;
  * 	},
  * 	itemOperations = {
  * 		"get",
- * 		"patch" = { "security" = "is_granted('ROLE_USER')" }
+ * 		"patch" = { "security" = "is_granted('ROLE_USER')", "denormalization_context"={"groups"={"accommodation:update"}} }
  * 	}
  * )
  * @ORM\Entity(repositoryClass=AccommodationRepository::class)
@@ -32,12 +32,13 @@ class Accommodation
 	
 	/**
 	 * @ORM\Column(type="integer", options={"unsigned":true})
+	 * @Groups({"accommodation:update"})
 	 */
 	private $status;
 	
 	/**
 	 * @ORM\Column(type="datetime")
-	 * @Groups({"accommodation:create"})
+	 * @Groups({"accommodation:create", "accommodation:update"})
 	 */
 	private $checkInAt;
 
@@ -71,7 +72,7 @@ class Accommodation
 	
 	/**
 	 * @ORM\ManyToMany(targetEntity="App\Entity\Guest", cascade={"persist"})
-	 * @Groups({"accommodation:create"})
+	 * @Groups({"accommodation:create", "accommodation:update"})
 	 */ 
 	private $guests;
 	

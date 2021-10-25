@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Response;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase as ApiPlatformTestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Test\Constraint\EntityShallowMatch;
+use PhpParser\Node\Expr\FuncCall;
 
 abstract class ApiTestCase extends ApiPlatformTestCase
 {
@@ -32,6 +33,12 @@ abstract class ApiTestCase extends ApiPlatformTestCase
 	protected function assertEntityProperties($entity, $array)
 	{
 		return false;
+	}
+	
+	protected function getIri(object $object) : ?string
+	{
+		self::bootKernel();
+		return $this->findIriBy($object::class, ['id' => $object->getId()] );
 	}
 	
 	/**
