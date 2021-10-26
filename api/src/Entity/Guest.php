@@ -21,19 +21,16 @@ class Guest
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-	  * @Groups({"accommodation:update"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-	  * @Groups({"accommodation:update"})
      */
     private $surname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-	  * @Groups({"accommodation:update"})
      */
     private $nationality;
 
@@ -45,7 +42,6 @@ class Guest
 
 	/**
 	 * @ORM\Column(type="string", length=255, nullable=true)
-	 * @Groups({"accommodation:update"})
 	 */
 	private $documentId;
 
