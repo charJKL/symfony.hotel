@@ -29,7 +29,7 @@ final class Version20211016093645 extends AbstractMigration
         $this->addSql('ALTER TABLE accommodation_guest ADD CONSTRAINT FK_A008B9CF8F3692CD FOREIGN KEY (accommodation_id) REFERENCES accommodation (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE accommodation_guest ADD CONSTRAINT FK_A008B9CF9A4AA658 FOREIGN KEY (guest_id) REFERENCES guest (id) ON DELETE CASCADE');
 			$this->addSql('ALTER TABLE accommodation ADD CONSTRAINT accommodation_chk_1 CHECK (check_in_at < check_out_at)');
-		  $this->addSql('ALTER TABLE guest ADD CONSTRAINT guest_chk_1 CHECK (email IS NOT NULL OR phone IS NOT NULL)');
+		  $this->addSql('ALTER TABLE guest ADD CONSTRAINT guest_chk_1 CHECK (name IS NOT NULL AND surname IS NOT NULL AND document_id IS NOT NULL) OR (email IS NOT NULL OR phone IS NOT NULL)');
     }
 
     public function down(Schema $schema): void
