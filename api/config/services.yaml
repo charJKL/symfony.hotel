@@ -26,3 +26,7 @@ services:
     App\OpenApi\AccommodationEndpointsDocs:
         decorates: 'api_platform.openapi.factory'
         arguments: ['@App\OpenApi\AccommodationEndpointsDocs.inner']
+        
+    App\OpenApi\AccommodationToGuestEndpointsDocs:
+        decorates: 'api_platform.openapi.factory'
+        arguments: ['@App\OpenApi\AccommodationToGuestEndpointsDocs.inner']
