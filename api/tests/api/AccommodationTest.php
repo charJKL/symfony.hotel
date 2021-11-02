@@ -78,7 +78,7 @@ class AccommodationTest extends ApiTestCase
 		$client = self::createApiClient();
 		$client->logIn($employee);
 		$client->request(http::PUT, 'api/accommodations/'.$accommodation->getId().'/guests/'.$guestOne->getId(), [], []);
-		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
+		$this->assertResponseStatusCodeSame(http::HTTP_204_NO_CONTENT);
 		
 		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
 		$this->assertCount(2, $accommodation->getGuests());

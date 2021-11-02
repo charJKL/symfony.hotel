@@ -8,6 +8,7 @@ interface ApiClientInterface
 {
 	const HTTP_200_OK = Response::HTTP_OK;
 	const HTTP_201_HTTP_CREATED = Response::HTTP_CREATED;
+	const HTTP_204_NO_CONTENT = Response::HTTP_NO_CONTENT;
 	const HTTP_401_UNAUTHORIZED = Response::HTTP_UNAUTHORIZED;
 	const HTTP_404_NOT_FOUND = Response::HTTP_NOT_FOUND;
 	const HTTP_405_NOT_ALLOWED = Response::HTTP_METHOD_NOT_ALLOWED;
