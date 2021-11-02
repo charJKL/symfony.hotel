@@ -28,6 +28,10 @@ class ApiClient implements ApiClientInterface
 			$options['headers'][self::HEADER_CONTENT_TYPE] = 'application/merge-patch+json';
 			$options['json'] = $data;
 		}
+		if($method === self::PUT)
+		{
+			$options['headers'][self::HEADER_CONTENT_TYPE] = 'application/json';
+		}
 		
 		return $this->client->request($method, $uri, $options);
 	}
@@ -39,3 +43,4 @@ class ApiClient implements ApiClientInterface
 		return $this;
 	}
 }
+

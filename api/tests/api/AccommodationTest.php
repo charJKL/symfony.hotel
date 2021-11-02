@@ -67,26 +67,20 @@ class AccommodationTest extends ApiTestCase
 		$this->assertEquals(Accommodation::CONFIRMED, $accommodation->getStatus(), 'Status of accommodation was not updated.');
 	}
 	
-	public function testCheckInAccommodationRequireGuestFullInformation()
+	public function testAssignAccommodationToGuest()
 	{
 		$employee = EmployeeFactory::new()->create();
 		$guest = GuestFactory::new()->withEmail()->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withGuests([$guest])->create();
 		
-		$iri = $this->getIri($guest->object());
-		$properties = ['@id'=> $iri,'name' => 'Joe', 'surname' => 'Doe', 'nationality' => 'PL', 'documentId' => 'ASD5567'];
-		$json = ['status' => Accommodation::CHECKED_IN, 'guests' => [$properties]];
+		$guestOne = GuestFactory::new()->withFull()->create();
 		
 		$client = self::createApiClient();
 		$client->logIn($employee);
-		$client->request(http::PATCH, 'api/accommodations/'.$accommodation->getId(), [], $json);
+		$client->request(http::PUT, 'api/accommodations/'.$accommodation->getId().'/guests/'.$guestOne->getId(), [], []);
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
 		
-		$guest = $this->em(Guest::class)->find($guest->getId());
 		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
-		$this->assertEquals(Accommodation::CHECKED_IN, $accommodation->getStatus());
-		$this->assertEntityProperties($guest, $properties);
-		
+		$this->assertCount(2, $accommodation->getGuests());
 	}
-	
 }

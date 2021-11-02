@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AccommodationRepository;
+use App\Controller\AccommodationController;
 
 /**
  * @ApiResource(
@@ -16,7 +17,9 @@ use App\Repository\AccommodationRepository;
  * 	},
  * 	itemOperations = {
  * 		"get",
- * 		"patch" = { "security" = "is_granted('ROLE_USER')", "denormalization_context"={"groups"={"accommodation:update"}} }
+ * 		"patch" = { "security" = "is_granted('ROLE_USER')", "denormalization_context"={"groups"={"accommodation:update"}} },
+ * 		"add_guests" = { "method" = "PUT", "path" = "/accommodations/{id}/guests/{guestId}", "controller"="App\Controller\AccommodationController::guests", "deserialize" = false },
+ * 		"add_rooms" = { "method" = "PUT", "path" = "/accommodations/{id}/rooms/{roomId}", "controller"="App\Controller\AccommodationController::rooms", "deserialize" = false }
  * 	}
  * )
  * @ORM\Entity(repositoryClass=AccommodationRepository::class)
