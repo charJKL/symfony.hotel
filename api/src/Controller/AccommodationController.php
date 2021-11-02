@@ -18,12 +18,12 @@ class AccommodationController extends AbstractController
 		$this->em = $em;
 	}
 	
-	public function guests(string $id, string $guestId)
+	public function guests(string $id, string $guest_id)
 	{
 		$accommodation = $this->em->getRepository(Accommodation::class)->find($id);
 		if($accommodation === null) return new Response('Accommodation not found.', Response::HTTP_NOT_FOUND);
 		
-		$guest = $this->em->getRepository(Guest::class)->find($guestId);
+		$guest = $this->em->getRepository(Guest::class)->find($guest_id);
 		if($guest === null) return new Response('Guest not found.', Response::HTTP_NOT_FOUND);
 		
 		$accommodation->addGuest($guest);
