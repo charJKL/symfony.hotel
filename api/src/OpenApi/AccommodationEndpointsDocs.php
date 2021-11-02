@@ -23,10 +23,10 @@ class AccommodationEndpointsDocs implements OpenApiFactoryInterface
 		$addGuestOperationUrl = '/api/accommodations/{accommodation_id}/guests/{guest_id}';
 			$addGuestPath = $docs->getPaths()->getPath($addGuestOperationUrl);
 			$addGuestOperationOriginal = $addGuestPath->getPut();
-			$addGuestOperation = new Operation('add_guest');
+			$addGuestOperation = new Operation('add_guests');
 			$addGuestOperationResponses = [];
 			$addGuestOperationResponses[204] = new Response("Relation added.", null, null, null);
-			$addGuestOperationResponses[404] = new Response("Resource not found", null, null, null);
+			$addGuestOperationResponses[404] = new Response("Relation not found", null, null, null);
 			$addGuestOperation = $addGuestOperation->withResponses($addGuestOperationResponses);
 			$addGuestOperation = $addGuestOperation->withTags($addGuestOperationOriginal->getTags());
 			$addGuestOperation = $addGuestOperation->withSummary('Assign Guest to Accommodation');
@@ -34,11 +34,25 @@ class AccommodationEndpointsDocs implements OpenApiFactoryInterface
 			$addGuestOperationAccommodationId = new Parameter('accommodation_id', 'path', 'Accommodation id.', true);
 			$addGuestOperationGuestId = new Parameter('guest_id', 'path', 'Guest id.', true);
 			$addGuestOperation = $addGuestOperation->withParameters([$addGuestOperationAccommodationId, $addGuestOperationGuestId]);
-			
-
-			
 			$addGuestPath = $addGuestPath->withPut($addGuestOperation);
 			$docs->getPaths()->addPath($addGuestOperationUrl, $addGuestPath);
+			
+		$removeGuestOperationUrl = '/api/accommodations/{accommodation_id}/guests/{guest_id}';
+			$removeGuestPath = $docs->getPaths()->getPath($removeGuestOperationUrl);
+			$removeOperationOriginal = $removeGuestPath->getDelete();
+			$removeGuestOperation = new Operation('remove_guests');
+			$removeGuestOperationResponses = [];
+			$removeGuestOperationResponses[204] = new Response("Relation removed.", null, null, null);
+			$removeGuestOperationResponses[404] = new Response("Relation not found", null, null, null);
+			$removeGuestOperation = $removeGuestOperation->withResponses($removeGuestOperationResponses);
+			$removeGuestOperation = $removeGuestOperation->withTags($removeOperationOriginal->getTags());
+			$removeGuestOperation = $removeGuestOperation->withSummary('Remove Guest from Accommodation');
+			$removeGuestOperation = $removeGuestOperation->withDescription('Remove Guest from Accommodation');
+			$removeGuestOperationAccommodationId = new Parameter('accommodation_id', 'path', 'Accommodation id.', true);
+			$removeGuestOperationGuestId = new Parameter('guest_id', 'path', 'Guest id.', true);
+			$removeGuestOperation = $removeGuestOperation->withParameters([$removeGuestOperationAccommodationId, $removeGuestOperationGuestId]);
+			$removeGuestPath = $removeGuestPath->withDelete($removeGuestOperation);
+			$docs->getPaths()->addPath($removeGuestOperationUrl, $removeGuestPath);
 		
 		return $docs;
 	}

@@ -67,7 +67,7 @@ class AccommodationTest extends ApiTestCase
 		$this->assertEquals(Accommodation::CONFIRMED, $accommodation->getStatus(), 'Status of accommodation was not updated.');
 	}
 	
-	public function testAssignAccommodationToGuest()
+	public function testAssignGuestToAccommodation()
 	{
 		$employee = EmployeeFactory::new()->create();
 		$guest = GuestFactory::new()->withEmail()->create();
@@ -82,5 +82,21 @@ class AccommodationTest extends ApiTestCase
 		
 		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
 		$this->assertCount(2, $accommodation->getGuests());
+	}
+	
+	public function testRemoveGuestFromAccommodation()
+	{
+		$employee = EmployeeFactory::new()->create();
+		$guestOne = GuestFactory::new()->withEmail()->create();
+		$guestTwo = GuestFactory::new()->withEmail()->create();
+		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withGuests([$guestOne, $guestTwo])->create();
+		
+		$client = self::createApiClient();
+		$client->logIn($employee);
+		$client->request(http::DELETE, 'api/accommodations/'.$accommodation->getId().'/guests/'.$guestOne->getId(), [], []);
+		$this->assertResponseStatusCodeSame(http::HTTP_204_NO_CONTENT);
+		
+		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
+		$this->assertCount(1, $accommodation->getGuests());
 	}
 }

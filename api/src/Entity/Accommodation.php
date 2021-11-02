@@ -18,8 +18,8 @@ use App\Controller\AccommodationController;
  * 	itemOperations = {
  * 		"get",
  * 		"patch" = { "security" = "is_granted('ROLE_USER')", "denormalization_context"={"groups"={"accommodation:update"}} },
- * 		"add_guests" = { "method" = "PUT", "path" = "/accommodations/{accommodation_id}/guests/{guest_id}", "controller"="App\Controller\AccommodationController::guests", "read" = false, "deserialize" = false, "validate" = false, "write" = false },
- * 		"add_rooms" = { "method" = "PUT", "path" = "/accommodations/{id}/rooms/{room_id}", "controller"="App\Controller\AccommodationController::rooms", "deserialize" = false }
+ * 		"add_guests" = { "method" = "PUT", "path" = "/accommodations/{accommodation_id}/guests/{guest_id}", "controller"="App\Controller\AccommodationController::add_guests", "read" = false, "deserialize" = false, "validate" = false, "write" = false },
+ * 		"remove_guests" = { "method" = "DELETE", "path" = "/accommodations/{accommodation_id}/guests/{guest_id}", "controller"="App\Controller\AccommodationController::remove_guests", "read" = false, "deserialize" = false, "validate" = false, "write" = false }
  * 	}
  * )
  * @ORM\Entity(repositoryClass=AccommodationRepository::class)
