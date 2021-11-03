@@ -20,7 +20,7 @@ security:
         guest_provider:
           entity:
             class: App\Entity\Guest
-            property: email
+            property: id
         
         users_provider:
           chain:
@@ -38,6 +38,9 @@ security:
               check_path: /login
               username_path: login
               password_path: password
+            
+            custom_authenticators:
+              - App\Security\GuestAuthenticator
             
             logout: 
               path: /logout

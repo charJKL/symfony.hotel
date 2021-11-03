@@ -28,6 +28,21 @@ class SecurityController extends AbstractController
 	}
 	
 	/**
+	 * @Route("/guest/login")
+	 */ 
+	public function guest()
+	{
+		if($this->isGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY) === false)
+		{
+			return new Response(null, self::HTTP_401_UNAUTHORIZED);
+		}
+		
+		$user = $this->getUser();
+		$account = ['login' => $user->getId()];
+		return new JsonResponse($account, self::HTTP_200_OK);
+	}
+	
+	/**
 	 * @Route("/logout", name="logout")
 	 */ 
 	public function logout()

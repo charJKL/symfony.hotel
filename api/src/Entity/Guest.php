@@ -152,7 +152,7 @@ class Guest implements UserInterface, PasswordAuthenticatedUserInterface
 	 */ 
 	public function getUsername()
 	{
-		return (string) $this->email;
+		return (string) $this->id;
 	}
 	
 	/**
@@ -160,7 +160,7 @@ class Guest implements UserInterface, PasswordAuthenticatedUserInterface
 	 */
 	public function getUserIdentifier(): string
 	{
-		return (string) $this->email;
+		return (string) $this->id;
 	}
 
 	/**
