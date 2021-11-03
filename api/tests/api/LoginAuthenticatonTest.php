@@ -53,7 +53,7 @@ class LoginAuthenticatonTest extends ApiTestCase
 		$guest = GuestFactory::new()->withFull()->withPlainPassword('password123')->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::CHECKED_IN)->withRooms([$room])->withGuests([$guest])->create();
 		
-		$json = ['username'=> '201', 'password' => 'super-secret-password'];
+		$json = ['username'=> '201', 'password' => 'password123'];
 		
 		$this->request(http::POST, '/guest/login', [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);

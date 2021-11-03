@@ -46,8 +46,9 @@ class GuestAuthenticator extends AbstractAuthenticator
 
 		$guestByEmail = $this->em->getRepository(Guest::class)->findByEmail($username);
 		$guestByPhone = $this->em->getRepository(Guest::class)->findByPhone($username);
-		
-		$guests = array_merge($guestByEmail, $guestByPhone);
+		$guestForRoom = $this->em->getRepository(Guest::class)->findGuestForRoom($username);
+
+		$guests = array_merge($guestByEmail, $guestByPhone, $guestForRoom);
 		foreach($guests as $guest)
 		{
 			if($this->hasher->isPasswordValid($guest, $password) === true)

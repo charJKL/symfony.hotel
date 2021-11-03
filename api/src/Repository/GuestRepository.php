@@ -19,6 +19,15 @@ class GuestRepository extends ServiceEntityRepository
         parent::__construct($registry, Guest::class);
     }
 
+	public function findGuestForRoom(string $number)
+	{
+		$dql = "SELECT g FROM App\\Entity\\Accommodation a JOIN App\\Entity\\Room r JOIN App\\Entity\\Guest g WHERE r.number LIKE :number";
+		$query = $this->getEntityManager()->createQuery($dql);
+		$query->setParameter('number', "%$number%");
+		return $query->getResult();
+	}
+
+
     // /**
     //  * @return Guest[] Returns an array of Guest objects
     //  */
