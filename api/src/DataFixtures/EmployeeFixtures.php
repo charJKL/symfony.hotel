@@ -10,7 +10,7 @@ class EmployeeFixtures extends Fixture
 {
 	public function load(ObjectManager $manager): void
 	{
-		EmployeeFactory::new()->uuid('admin')->password('password1')->withRoles(['ROLE_MANAGER'])->create();
+		EmployeeFactory::new()->uuid('admin')->withPlainPassword('password1')->withRoles(['ROLE_MANAGER'])->create();
 		EmployeeFactory::new()->uuid('annie')->create();
 		EmployeeFactory::new()->uuid('thomas.black')->create();
 	}

@@ -50,7 +50,7 @@ class AccommodationTest extends ApiTestCase
 	
 	public function testConfirmAccommodationRequireLogin()
 	{
-		$employee = EmployeeFactory::new()->uuid('dummy')->password('password1')->create();
+		$employee = EmployeeFactory::new()->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::BOOKED)->create();
 		
 		$json = ['status' => Accommodation::CONFIRMED];

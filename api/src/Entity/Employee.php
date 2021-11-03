@@ -36,7 +36,12 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
-
+	 
+	/**
+	 * @var string Password in plain form.
+	 */ 
+	private $plainPassword;
+	
     public function getId(): ?int
     {
         return $this->id;
@@ -90,7 +95,18 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
+	 
+	public function setPlainPassword(string $password) : self
+	{
+		$this->plainPassword = $password;
+		return $this;
+	}
+	
+	public function getPlainPassword() : ?string
+	{
+		return $this->plainPassword;
+	}
+	
     /**
      * @see PasswordAuthenticatedUserInterface
      */

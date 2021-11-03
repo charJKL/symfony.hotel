@@ -56,13 +56,13 @@ final class EmployeeFactory extends ModelFactory
 	
 	public static function afterInstantiateEmployee(Employee $employee, array $attributes) : void
 	{
-		$password = $attributes['uuid'] . '-password';
+		$password = $employee->getPlainPassword() ?? 'password';
 		$employee->setPassword(self::$hasher->hashPassword($employee, $password));
 	}
 	
-	public function password(string $password) : self
+	public function withPlainPassword(string $password) : self
 	{
-		return $this->addState(['password' => $password]);
+		return $this->addState(['plainPassword' => $password]);
 	}
 	
 	public function uuid(string $uuid) : self
