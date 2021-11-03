@@ -2,12 +2,12 @@
 
 namespace App\Factory;
 
-use App\Entity\Guest;
-use App\Repository\GuestRepository;
-use PhpParser\Node\Expr\FuncCall;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
+use App\Repository\GuestRepository;
+use App\Entity\Guest;
 
 /**
  * @extends ModelFactory<Guest>
@@ -29,9 +29,28 @@ use Zenstruck\Foundry\Proxy;
  */
 final class GuestFactory extends ModelFactory
 {
+	private static $hasher = null;
+	
+	public function __construct(UserPasswordHasherInterface $hasher)
+	{
+		parent::__construct();
+		self::$hasher = $hasher;
+	}
+	
 	protected static function getClass() : string
 	{
 		return Guest::class;
+	}
+	
+	protected function initialize() : self
+	{
+		return $this->afterInstantiate([self::class, 'afterInstantiateGuest']);
+	}
+	
+	public static function afterInstantiateGuest(Guest $guest, array $attributes) : void
+	{
+		$password = $guest->getPlainPassword() ?? 'password';
+		$guest->setPassword(self::$hasher->hashPassword($guest, $password));
 	}
 	
 	protected function getDefaults(): array
@@ -59,20 +78,33 @@ final class GuestFactory extends ModelFactory
 		return $this->addState($this->defaultPersonal());
 	}
 	
-	public function withEmail() : self
+	public function withEmail(string $email = null) : self
 	{
-		return $this->addState(['email' => self::faker()->unique()->email()]);
+		return $this->addState(['email' => $email ?? self::faker()->unique()->email()]);
 	}
 	
-	public function withPhone() : self 
+	public function withPhone(string $phone = null) : self 
 	{
-		return $this->addState(['phone' => self::faker()->unique()->tollFreePhoneNumber()]);
+		return $this->addState(['phone' => $phone ?? self::faker()->unique()->tollFreePhoneNumber()]);
 	}
 	
-	public function withDocumentId() : self
+	public function withDocumentId(string $documentId = null) : self
 	{
-		return $this->addState(['documentId' => self::faker()->unique()->bothify('???######')]);
+		return $this->addState(['documentId' => $documentId ?? self::faker()->unique()->bothify('???######')]);
 	}
-
-
+	
+	public function withPassword(string $password) : self
+	{
+		return $this->addState(['password' => $password]);
+	}
+	
+	public function withPlainPassword(string $password) : self
+	{
+		return $this->addState(['plainPassword' => $password]);
+	}
+	
+	public function withRoles(array $roles): self
+	{
+		return $this->addState(['roles' => $roles]);
+	}
 }

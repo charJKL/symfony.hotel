@@ -9,14 +9,22 @@ security:
         App\Entity\Guest:
             algorithm: auto
 
-
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         employee_provider:
-            entity:
-                class: App\Entity\Employee
-                property: uuid
+          entity:
+            class: App\Entity\Employee
+            property: uuid
+
+        guest_provider:
+          entity:
+            class: App\Entity\Guest
+            property: email
+        
+        users_provider:
+          chain:
+            providers: ["employee_provider", "guest_provider"]
 
     firewalls:
         dev:
@@ -24,16 +32,15 @@ security:
             security: false
         main:
             lazy: true
-            provider: employee_provider
+            provider: users_provider
+            
+            json_login:
+              check_path: /login
+              username_path: login
+              password_path: password
             
             logout: 
               path: /logout
-            
-            json_login:
-              login_path: /login
-              check_path: login
-              username_path: login
-              password_path: password
             
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
