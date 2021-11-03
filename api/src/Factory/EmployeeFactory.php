@@ -65,7 +65,7 @@ final class EmployeeFactory extends ModelFactory
 		return $this->addState(['plainPassword' => $password]);
 	}
 	
-	public function uuid(string $uuid) : self
+	public function withUuid(string $uuid) : self
 	{
 		return $this->addState(['uuid' => $uuid]);
 	}
