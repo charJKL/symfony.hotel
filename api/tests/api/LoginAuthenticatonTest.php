@@ -48,12 +48,20 @@ class LoginAuthenticatonTest extends ApiTestCase
 	{
 		self::bootKernel();
 		$room = RoomFactory::new()->withNumber(201)->create();
-		$guest = GuestFactory::new()->withFull()->withPlainPassword('password123')->create();
-		$accommodation = AccommodationFactory::new()->status(Accommodation::CHECKED_IN)->withRooms([$room])->withGuests([$guest])->create();
+		$guestOne = GuestFactory::new()->withFull()->withPlainPassword('password123')->create();
+		$guestTwo = GuestFactory::new()->withFull()->withPlainPassword('diffrent-password')->create();
+		$accommodation = AccommodationFactory::new()->status(Accommodation::CHECKED_IN)->withRooms([$room])->withGuests([$guestOne, $guestTwo])->create();
 		
 		$json = ['identifier'=> '201', 'password' => 'password123'];
-		
 		$this->request(http::POST, '/api/guests/login', [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
+		$user = self::getContainer()->get('security.token_storage')->getToken()->getUser();
+		$this->assertEquals($guestOne->getId(), $user->getId());
+
+		$json = ['identifier'=> '201', 'password' => 'diffrent-password'];
+		$this->request(http::POST, '/api/guests/login', [], $json);
+		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
+		$user = self::getContainer()->get('security.token_storage')->getToken()->getUser();
+		$this->assertEquals($guestTwo->getId(), $user->getId());
 	}
 }
