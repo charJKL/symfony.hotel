@@ -9,6 +9,14 @@ use Zenstruck\Foundry\Proxy as FoundryProxy;
 
 abstract class ApiTestCase extends ApiPlatformTestCase
 {
+	/**
+	 * @beforeClass
+	 */
+	public static function initTestSuit(): void
+	{
+		self::bootKernel();
+	}
+
 	protected function createApiClient()
 	{
 		return new ApiClient(self::createClient());
