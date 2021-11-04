@@ -51,6 +51,7 @@ class AccommodationTest extends ApiTestCase
 	
 	public function testConfirmAccommodationRequireLogin()
 	{
+		self::bootKernel();
 		$employee = EmployeeFactory::new()->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::BOOKED)->create();
 		
@@ -70,6 +71,7 @@ class AccommodationTest extends ApiTestCase
 	
 	public function testAssignGuestToAccommodation()
 	{
+		self::bootKernel();
 		$employee = EmployeeFactory::new()->create();
 		$guest = GuestFactory::new()->withEmail()->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withGuests([$guest])->create();
@@ -87,6 +89,7 @@ class AccommodationTest extends ApiTestCase
 	
 	public function testRemoveGuestFromAccommodation()
 	{
+		self::bootKernel();
 		$employee = EmployeeFactory::new()->create();
 		$guestOne = GuestFactory::new()->withEmail()->create();
 		$guestTwo = GuestFactory::new()->withEmail()->create();
@@ -103,6 +106,7 @@ class AccommodationTest extends ApiTestCase
 	
 	public function testAddRoomToAccommodation()
 	{
+		self::bootKernel();
 		$employee = EmployeeFactory::new()->create();
 		$room = RoomFactory::new()->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withRooms([$room])->create();
@@ -120,6 +124,7 @@ class AccommodationTest extends ApiTestCase
 	
 	public function testRemoveRoomFromAccommodation()
 	{
+		self::bootKernel();
 		$employee = EmployeeFactory::new()->create();
 		$roomOne = RoomFactory::new()->create();
 		$roomTwo = RoomFactory::new()->create();
