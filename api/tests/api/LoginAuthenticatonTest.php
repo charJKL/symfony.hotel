@@ -22,11 +22,21 @@ class LoginAuthenticatonTest extends ApiTestCase
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
 	}
 	
+	public function testGuestCantLogInOnEmptyPassword()
+	{
+		$guest = GuestFactory::new()->withEmail('fake@email.com')->create();
+		$accommodation = AccommodationFactory::new()->status(Accommodation::CHECKED_IN)->withGuests([$guest])->create();
+		
+		$json = ['identifier' => 'fake@email.com', 'password' => ''];
+		
+		$this->request(http::POST, '/api/guests/login', [], $json);
+		$this->assertResponseStatusCodeSame(http::HTTP_401_UNAUTHORIZED);
+	}
+	
 	public function testGuestCanLogInByEmail()
 	{
 		$guest = GuestFactory::new()->withEmail('fake@email.com')->withPlainPassword('secretPassword')->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::CHECKED_IN)->withGuests([$guest])->create();
-
 		
 		$json = ['identifier' => 'fake@email.com', 'password' => 'secretPassword'];
 		
