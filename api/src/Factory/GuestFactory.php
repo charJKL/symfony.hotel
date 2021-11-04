@@ -42,6 +42,11 @@ final class GuestFactory extends ModelFactory
 		return Guest::class;
 	}
 	
+	protected function getDefaults(): array
+	{
+		return [ ];
+	}
+	
 	protected function initialize() : self
 	{
 		return $this->afterInstantiate([self::class, 'afterInstantiateGuest']);
@@ -49,13 +54,7 @@ final class GuestFactory extends ModelFactory
 	
 	public static function afterInstantiateGuest(Guest $guest, array $attributes) : void
 	{
-		$password = $guest->getPlainPassword() ?? 'password';
-		$guest->setPassword(self::$hasher->hashPassword($guest, $password));
-	}
-	
-	protected function getDefaults(): array
-	{
-		return [ ];
+		if($guest->getPlainPassword() !== null) $guest->setPassword(self::$hasher->hashPassword($guest, $guest->getPlainPassword()));
 	}
 	
 	private function defaultPersonal() : array

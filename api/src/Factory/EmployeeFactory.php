@@ -46,6 +46,7 @@ final class EmployeeFactory extends ModelFactory
 	{
 		return [
 			'uuid' => self::faker()->unique()->firstName(),
+			'plainPassword' => 'password'
 		];
 	}
 	
@@ -56,8 +57,7 @@ final class EmployeeFactory extends ModelFactory
 	
 	public static function afterInstantiateEmployee(Employee $employee, array $attributes) : void
 	{
-		$password = $employee->getPlainPassword() ?? 'password';
-		$employee->setPassword(self::$hasher->hashPassword($employee, $password));
+		$employee->setPassword(self::$hasher->hashPassword($employee, $employee->getPlainPassword()));
 	}
 	
 	public function withPlainPassword(string $password) : self
