@@ -1,13 +1,13 @@
 <?php
 namespace App\Controller;
 
-
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Accommodation;
 use App\Entity\Guest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Entity\Room;
 
 class AccommodationController extends AbstractController
 {
@@ -45,10 +45,32 @@ class AccommodationController extends AbstractController
 		
 		return new Response('', 204);
 	}
-		
-	public function rooms(string $id, string $roomId)
+	
+	public function add_rooms(string $accommodation_id, string $room_id)
 	{
-		var_dump('rooms action', $id, $roomId);
-		return null;
+		$accommodation = $this->em->getRepository(Accommodation::class)->find($accommodation_id);
+		if($accommodation === null) throw new NotFoundHttpException(sprintf('Accommodation #%s not found.', $accommodation_id));
+		
+		$room = $this->em->getRepository(Room::class)->find($room_id);
+		if($room === null) throw new NotFoundHttpException(sprintf('Room #%s not found.', $room_id));
+		
+		$accommodation->addRoom($room);
+		$this->em->flush();
+		
+		return new Response('', 204);
+	}
+	
+	public function remove_rooms(string $accommodation_id, string $room_id)
+	{
+		$accommodation = $this->em->getRepository(Accommodation::class)->find($accommodation_id);
+		if($accommodation === null) throw new NotFoundHttpException(sprintf('Accommodation #%s not found.', $accommodation_id));
+		
+		$room = $this->em->getRepository(Room::class)->find($room_id);
+		if($room === null) throw new NotFoundHttpException(sprintf('Room #%s not found.', $room_id));
+		
+		$accommodation->removeRoom($room);
+		$this->em->flush();
+		
+		return new Response('', 204);
 	}
 }

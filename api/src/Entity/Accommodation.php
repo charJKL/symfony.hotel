@@ -19,7 +19,9 @@ use App\Controller\AccommodationController;
  * 		"get",
  * 		"patch" = { "security" = "is_granted('ROLE_USER')", "denormalization_context"={"groups"={"accommodation:update"}} },
  * 		"add_guests" = { "method" = "PUT", "path" = "/accommodations/{accommodation_id}/guests/{guest_id}", "controller"="App\Controller\AccommodationController::add_guests", "read" = false, "deserialize" = false, "validate" = false, "write" = false },
- * 		"remove_guests" = { "method" = "DELETE", "path" = "/accommodations/{accommodation_id}/guests/{guest_id}", "controller"="App\Controller\AccommodationController::remove_guests", "read" = false, "deserialize" = false, "validate" = false, "write" = false }
+ * 		"remove_guests" = { "method" = "DELETE", "path" = "/accommodations/{accommodation_id}/guests/{guest_id}", "controller"="App\Controller\AccommodationController::remove_guests", "read" = false, "deserialize" = false, "validate" = false, "write" = false },
+ * 		"add_rooms" = { "method" = "PUT", "path" = "/accommodations/{accommodation_id}/rooms/{room_id}", "controller"="App\Controller\AccommodationController::add_rooms", "read" = false, "deserialize" = false, "validate" = false, "write" = false },
+ * 		"remove_rooms" = { "method" = "DELETE", "path" = "/accommodations/{accommodation_id}/rooms/{room_id}", "controller"="App\Controller\AccommodationController::remove_rooms", "read" = false, "deserialize" = false, "validate" = false, "write" = false }
  * 	}
  * )
  * @ORM\Entity(repositoryClass=AccommodationRepository::class)

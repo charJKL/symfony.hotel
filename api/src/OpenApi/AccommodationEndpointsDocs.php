@@ -6,6 +6,7 @@ use ApiPlatform\Core\OpenApi\Model\Operation;
 use ApiPlatform\Core\OpenApi\OpenApi;
 use ApiPlatform\Core\OpenApi\Model\Parameter;
 use ApiPlatform\Core\OpenApi\Model\Response;
+use PhpParser\Node\Expr\FuncCall;
 
 class AccommodationEndpointsDocs implements OpenApiFactoryInterface
 {
@@ -20,40 +21,107 @@ class AccommodationEndpointsDocs implements OpenApiFactoryInterface
 	{
 		$docs = $this->decorated->__invoke($context);
 		
-		$addGuestOperationUrl = '/api/accommodations/{accommodation_id}/guests/{guest_id}';
-			$addGuestPath = $docs->getPaths()->getPath($addGuestOperationUrl);
-			$addGuestOperationOriginal = $addGuestPath->getPut();
-			$addGuestOperation = new Operation('add_guests');
-			$addGuestOperationResponses = [];
-			$addGuestOperationResponses[204] = new Response("Relation added.", null, null, null);
-			$addGuestOperationResponses[404] = new Response("Relation not found", null, null, null);
-			$addGuestOperation = $addGuestOperation->withResponses($addGuestOperationResponses);
-			$addGuestOperation = $addGuestOperation->withTags($addGuestOperationOriginal->getTags());
-			$addGuestOperation = $addGuestOperation->withSummary('Assign Guest to Accommodation');
-			$addGuestOperation = $addGuestOperation->withDescription('Assign Guest to Accommodation');
-			$addGuestOperationAccommodationId = new Parameter('accommodation_id', 'path', 'Accommodation id.', true);
-			$addGuestOperationGuestId = new Parameter('guest_id', 'path', 'Guest id.', true);
-			$addGuestOperation = $addGuestOperation->withParameters([$addGuestOperationAccommodationId, $addGuestOperationGuestId]);
-			$addGuestPath = $addGuestPath->withPut($addGuestOperation);
-			$docs->getPaths()->addPath($addGuestOperationUrl, $addGuestPath);
-			
-		$removeGuestOperationUrl = '/api/accommodations/{accommodation_id}/guests/{guest_id}';
-			$removeGuestPath = $docs->getPaths()->getPath($removeGuestOperationUrl);
-			$removeOperationOriginal = $removeGuestPath->getDelete();
-			$removeGuestOperation = new Operation('remove_guests');
-			$removeGuestOperationResponses = [];
-			$removeGuestOperationResponses[204] = new Response("Relation removed.", null, null, null);
-			$removeGuestOperationResponses[404] = new Response("Relation not found", null, null, null);
-			$removeGuestOperation = $removeGuestOperation->withResponses($removeGuestOperationResponses);
-			$removeGuestOperation = $removeGuestOperation->withTags($removeOperationOriginal->getTags());
-			$removeGuestOperation = $removeGuestOperation->withSummary('Remove Guest from Accommodation');
-			$removeGuestOperation = $removeGuestOperation->withDescription('Remove Guest from Accommodation');
-			$removeGuestOperationAccommodationId = new Parameter('accommodation_id', 'path', 'Accommodation id.', true);
-			$removeGuestOperationGuestId = new Parameter('guest_id', 'path', 'Guest id.', true);
-			$removeGuestOperation = $removeGuestOperation->withParameters([$removeGuestOperationAccommodationId, $removeGuestOperationGuestId]);
-			$removeGuestPath = $removeGuestPath->withDelete($removeGuestOperation);
-			$docs->getPaths()->addPath($removeGuestOperationUrl, $removeGuestPath);
+		$this->describeAddGuestEndpoint($docs);
+		$this->describeRemoveGuestEndpoint($docs);
+		$this->describeAddRoomEndpoint($docs);
+		$this->describeRemoveRoomEndpoint($docs);
 		
 		return $docs;
+	}
+	
+	private function describeAddGuestEndpoint(OpenApi &$docs)
+	{
+		$url = '/api/accommodations/{accommodation_id}/guests/{guest_id}';
+		$path = $docs->getPaths()->getPath($url);
+		$original = $path->getPut();
+		
+		// Create operation description:
+		$operation = new Operation('add_guests');
+		$operationResponses = [];
+		$operationResponses[204] = new Response("Relation added.", null, null, null);
+		$operationResponses[404] = new Response("Relation not found", null, null, null);
+		$operation = $operation->withResponses($operationResponses);
+		$operation = $operation->withTags($original->getTags());
+		$operation = $operation->withSummary('Assign Guest to Accommodation');
+		$operation = $operation->withDescription('Assign Guest to Accommodation');
+		$operationAccommodationId = new Parameter('accommodation_id', 'path', 'Accommodation id.', true);
+		$operationGuestId = new Parameter('guest_id', 'path', 'Guest id.', true);
+		$operation = $operation->withParameters([$operationAccommodationId, $operationGuestId]);
+		
+		// Override PUT operation:
+		$path = $path->withPut($operation);
+		$docs->getPaths()->addPath($url, $path);
+	}
+	
+	public function describeRemoveGuestEndpoint(OpenApi &$docs)
+	{
+		$url = '/api/accommodations/{accommodation_id}/guests/{guest_id}';
+		$path = $docs->getPaths()->getPath($url);
+		$original = $path->getDelete();
+		
+		// Create operation description:
+		$operation = new Operation('remove_guests');
+		$operationResponses = [];
+		$operationResponses[204] = new Response("Relation removed.", null, null, null);
+		$operationResponses[404] = new Response("Relation not found", null, null, null);
+		$operation = $operation->withResponses($operationResponses);
+		$operation = $operation->withTags($original->getTags());
+		$operation = $operation->withSummary('Remove Guest from Accommodation');
+		$operation = $operation->withDescription('Remove Guest from Accommodation');
+		$operationAccommodationId = new Parameter('accommodation_id', 'path', 'Accommodation id.', true);
+		$operationGuestId = new Parameter('guest_id', 'path', 'Guest id.', true);
+		$operation = $operation->withParameters([$operationAccommodationId, $operationGuestId]);
+		
+		// Override DELETE operation:
+		$path = $path->withDelete($operation);
+		$docs->getPaths()->addPath($url, $path);
+	}
+	
+	private function describeAddRoomEndpoint(OpenApi &$docs)
+	{
+		$url = '/api/accommodations/{accommodation_id}/rooms/{room_id}';
+		$path = $docs->getPaths()->getPath($url);
+		$original = $path->getPut();
+		
+		// Create operation description:
+		$operation = new Operation('add_rooms');
+		$operationResponses = [];
+		$operationResponses[204] = new Response("Relation removed.", null, null, null);
+		$operationResponses[404] = new Response("Relation not found", null, null, null);
+		$operation = $operation->withResponses($operationResponses);
+		$operation = $operation->withTags($original->getTags());
+		$operation = $operation->withSummary('Remove Room from Accommodation');
+		$operation = $operation->withDescription('Remove Room from Accommodation');
+		$operationAccommodationId = new Parameter('accommodation_id', 'path', 'Accommodation id.', true);
+		$operationRoomId = new Parameter('room_id', 'path', 'Room id.', true);
+		$operation = $operation->withParameters([$operationAccommodationId, $operationRoomId]);
+		
+		// Override PUT operation:
+		$path = $path->withPut($operation);
+		$docs->getPaths()->addPath($url, $path);
+	}
+	
+	private function describeRemoveRoomEndpoint(OpenApi &$docs)
+	{
+		$url = '/api/accommodations/{accommodation_id}/rooms/{room_id}';
+		$path = $docs->getPaths()->getPath($url);
+		$original = $path->getDelete();
+		
+		// Create operation description:
+		$operation = new Operation('remove_rooms');
+		$operationResponses = [];
+		$operationResponses[204] = new Response("Relation removed.", null, null, null);
+		$operationResponses[404] = new Response("Relation not found", null, null, null);
+		$operation = $operation->withResponses($operationResponses);
+		$operation = $operation->withTags($original->getTags());
+		$operation = $operation->withSummary('Remove Room from Accommodation');
+		$operation = $operation->withDescription('Remove Room from Accommodation');
+		$operationAccommodationId = new Parameter('accommodation_id', 'path', 'Accommodation id.', true);
+		$operationRoomId = new Parameter('room_id', 'path', 'Room id.', true);
+		$operation = $operation->withParameters([$operationAccommodationId, $operationRoomId]);
+		
+		// Override DELETE operation:
+		$path = $path->withDelete($operation);
+		$docs->getPaths()->addPath($url, $path);
 	}
 }

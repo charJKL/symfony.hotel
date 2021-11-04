@@ -8,6 +8,7 @@ use App\Factory\EmployeeFactory;
 use App\Entity\Accommodation;
 use App\Entity\Guest;
 use App\Factory\GuestFactory;
+use App\Factory\RoomFactory;
 
 class AccommodationTest extends ApiTestCase
 {
@@ -98,5 +99,38 @@ class AccommodationTest extends ApiTestCase
 		
 		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
 		$this->assertCount(1, $accommodation->getGuests());
+	}
+	
+	public function testAddRoomToAccommodation()
+	{
+		$employee = EmployeeFactory::new()->create();
+		$room = RoomFactory::new()->create();
+		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withRooms([$room])->create();
+
+		$newRoom = RoomFactory::new()->create();
+		
+		$client = self::createApiClient();
+		$client->logIn($employee);
+		$client->request(http::PUT, 'api/accommodations/'.$accommodation->getId().'/rooms/'.$newRoom->getId(), [], []);
+		$this->assertResponseStatusCodeSame(http::HTTP_204_NO_CONTENT);
+		
+		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
+		$this->assertCount(2, $accommodation->getRooms());
+	}
+	
+	public function testRemoveRoomFromAccommodation()
+	{
+		$employee = EmployeeFactory::new()->create();
+		$roomOne = RoomFactory::new()->create();
+		$roomTwo = RoomFactory::new()->create();
+		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withRooms([$roomOne, $roomTwo])->create();
+		
+		$client = self::createApiClient();
+		$client->logIn($employee);
+		$client->request(http::DELETE, 'api/accommodations/'.$accommodation->getId().'/rooms/'.$roomOne->getId(), [], []);
+		$this->assertResponseStatusCodeSame(http::HTTP_204_NO_CONTENT);
+		
+		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
+		$this->assertCount(1, $accommodation->getRooms());
 	}
 }
