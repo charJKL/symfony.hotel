@@ -28,7 +28,7 @@ class LoginAuthenticatonTest extends ApiTestCase
 		self::bootKernel();
 		$guest = GuestFactory::new()->withEmail('fake@email.com')->withPlainPassword('secretPassword')->create();
 
-		$json = ['username' => 'fake@email.com', 'password' => 'secretPassword'];
+		$json = ['identifier' => 'fake@email.com', 'password' => 'secretPassword'];
 		
 		$this->request(http::POST, '/guest/login', [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
@@ -39,7 +39,7 @@ class LoginAuthenticatonTest extends ApiTestCase
 		self::bootKernel();
 		$guest = GuestFactory::new()->withPhone('000-123-555')->withPlainPassword('super-secret-password')->create();
 		
-		$json = ['username'=> '000-123-555', 'password' => 'super-secret-password'];
+		$json = ['identifier'=> '000-123-555', 'password' => 'super-secret-password'];
 		
 		$this->request(http::POST, '/guest/login', [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
@@ -53,7 +53,7 @@ class LoginAuthenticatonTest extends ApiTestCase
 		$guest = GuestFactory::new()->withFull()->withPlainPassword('password123')->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::CHECKED_IN)->withRooms([$room])->withGuests([$guest])->create();
 		
-		$json = ['username'=> '201', 'password' => 'password123'];
+		$json = ['identifier'=> '201', 'password' => 'password123'];
 		
 		$this->request(http::POST, '/guest/login', [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);

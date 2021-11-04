@@ -42,11 +42,12 @@ class GuestAuthenticator extends AbstractAuthenticator
 	
 	public function authenticate(Request $request): PassportInterface
 	{
-		[$username, $password] = $this->getCredentials($request);
-
-		$guestByEmail = $this->em->getRepository(Guest::class)->findByEmail($username);
-		$guestByPhone = $this->em->getRepository(Guest::class)->findByPhone($username);
-		$guestForRoom = $this->em->getRepository(Guest::class)->findGuestForRoom($username);
+		[$identifier, $password] = $this->getCredentials($request);
+		
+		// TODO merge it to one query. DQL do not support UNION.
+		$guestByEmail = $this->em->getRepository(Guest::class)->findByEmail($identifier);
+		$guestByPhone = $this->em->getRepository(Guest::class)->findByPhone($identifier);
+		$guestForRoom = $this->em->getRepository(Guest::class)->findGuestForRoom($identifier);
 
 		$guests = array_merge($guestByEmail, $guestByPhone, $guestForRoom);
 		foreach($guests as $guest)
@@ -66,33 +67,25 @@ class GuestAuthenticator extends AbstractAuthenticator
 	{
 		return null;
 	}
-		
+	
 	public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
 	{
-		$data = [
-				// you may want to customize or obfuscate the message first
-				'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
-					// or to translate this message
-				// $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
-		];
-			return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+		$data = ['message' => strtr($exception->getMessageKey(), $exception->getMessageData())];
+		return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
 	}
 	
 	private function getCredentials(Request $request) : array
 	{
-		$credentials = [];
-		$credentials['username'] = '';
-		$credentials['password'] = '';
 		$data = json_decode($request->getContent());
 
 		if($data === null) throw new BadRequestHttpException('Invalid JSON.');
-		if(isset($data->username) === false) throw new BadRequestHttpException("Missing 'username' property.");
+		if(isset($data->identifier) === false) throw new BadRequestHttpException("Missing 'identifier' property.");
 		if(isset($data->password) === false) throw new BadRequestHttpException("Missing 'password' property.");
 		
-		if(is_string($data->username) === false) throw new BadCredentialsException('Username value must be string.');
-		if(strlen($data->username) > Security::MAX_USERNAME_LENGTH) throw new BadCredentialsException('Username is too long.');
+		if(is_string($data->identifier) === false) throw new BadCredentialsException('Identifier value must be string.');
+		if(strlen($data->identifier) > Security::MAX_USERNAME_LENGTH) throw new BadCredentialsException('Identifier is too long.');
 		if(is_string($data->password) === false) throw new BadCredentialsException('Password must be string.');
 
-		return [$data->username, $data->password];
+		return [$data->identifier, $data->password];
 	}
 }
