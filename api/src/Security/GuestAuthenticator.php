@@ -35,7 +35,7 @@ class GuestAuthenticator extends AbstractAuthenticator
 	
 	public function supports(Request $request): ?bool
 	{
-		if($this->httpUtils->checkRequestPath($request, '/guest/login') === false) return false;
+		if($this->httpUtils->checkRequestPath($request, '/api/guests/login') === false) return false;
 		if(strpos($request->getContentType(), 'json') === false) return false;
 		return true;
 	}

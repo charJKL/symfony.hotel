@@ -27,9 +27,6 @@ class SecurityController extends AbstractController
 		return new JsonResponse($account, self::HTTP_200_OK);
 	}
 	
-	/**
-	 * @Route("/guest/login")
-	 */ 
 	public function guest()
 	{
 		if($this->isGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY) === false)

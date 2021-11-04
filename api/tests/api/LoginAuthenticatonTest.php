@@ -29,7 +29,7 @@ class LoginAuthenticatonTest extends ApiTestCase
 
 		$json = ['identifier' => 'fake@email.com', 'password' => 'secretPassword'];
 		
-		$this->request(http::POST, '/guest/login', [], $json);
+		$this->request(http::POST, '/api/guests/login', [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
 	}
 	
@@ -40,7 +40,7 @@ class LoginAuthenticatonTest extends ApiTestCase
 		
 		$json = ['identifier'=> '000-123-555', 'password' => 'super-secret-password'];
 		
-		$this->request(http::POST, '/guest/login', [], $json);
+		$this->request(http::POST, '/api/guests/login', [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
 	}
 	
@@ -53,7 +53,7 @@ class LoginAuthenticatonTest extends ApiTestCase
 		
 		$json = ['identifier'=> '201', 'password' => 'password123'];
 		
-		$this->request(http::POST, '/guest/login', [], $json);
+		$this->request(http::POST, '/api/guests/login', [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
 	}
 }

@@ -7,9 +7,22 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\GuestRepository;
+use App\Security\GuestLoginInput;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * 	collectionOperations = { 
+ * 		"get", 
+ * 		"post"
+ * 	},
+ * 	itemOperations = { 
+ * 		"get",
+ * 		"put",
+ * 		"delete",
+ * 		"patch",
+ * 		"login" = { "method" = "POST", "path" = "/guests/login", "controller"="App\Controller\SecurityController::guest", "input" = GuestLoginInput::class, "read" = false, "deserialize" = false, "validate" = false, "write" = false }
+ * 	}
+ * )
  * @ORM\Entity(repositoryClass=GuestRepository::class)
  */
 class Guest implements UserInterface, PasswordAuthenticatedUserInterface
