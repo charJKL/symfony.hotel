@@ -1,9 +1,10 @@
 <?php
 namespace App\Repository;
 
-use App\Entity\Accommodation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Guest;
+use App\Entity\Accommodation;
 
 /**
  * @method Accommodation|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,7 +18,18 @@ class AccommodationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Accommodation::class);
     }
-
+	
+	/**
+	 * @return Accommodation[]
+	 */ 
+	public function findAllForGuest(Guest $guest) : array
+	{
+		$dql = "SELECT a FROM App\\Entity\\Accommodation a JOIN App\\Entity\\Guest g WHERE g.id = :id ORDER BY a.checkInAt DESC";
+		$query = $this->getEntityManager()->createQuery($dql);
+		$query->setParameter('id', $guest->getId());
+		return $query->getResult();
+	}
+	
     // /**
     //  * @return Accommodation[] Returns an array of Accommodation objects
     //  */

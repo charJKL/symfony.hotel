@@ -33,7 +33,8 @@ security:
         main:
             lazy: true
             provider: users_provider
-            
+            user_checker: App\Security\GuestIsCheckInChecker
+
             json_login:
               check_path: /login
               username_path: login
