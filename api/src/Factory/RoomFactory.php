@@ -39,8 +39,19 @@ final class RoomFactory extends ModelFactory
 		[
 			'number' => self::faker()->unique()->numberBetween(0, 100),
 			'name' => null,
-			'facilities' => FacilityFactory::randomRange(1, 5)
+			'facilities' => []
 		];
+	}
+	
+	protected function initialize() : self
+	{
+		return $this->beforeInstantiate([self::class, 'beforeInstantiateRoom']);
+	}
+	
+	public static function beforeInstantiateRoom(array $attributes) : array
+	{
+		if(isset($attributes['name']) === false) $attributes['name'] = 'Room ' . $attributes['number'];
+		return $attributes;
 	}
 	
 	public function __call(string $name, array $arguments) : mixed
@@ -58,6 +69,11 @@ final class RoomFactory extends ModelFactory
 		return $this->addState(['name' => $name]);
 	}
 	
+	public function withFacilities(array $facilities) : self
+	{
+		return $this->addState(['facilities' => $facilities]);
+	}
+	
 	private function withNumberExact(int $number) : self
 	{
 		return $this->addState(['number' => $number]);
@@ -66,16 +82,5 @@ final class RoomFactory extends ModelFactory
 	private function withNumberBetween(int $from, int $to) : self
 	{
 		return $this->addState(['number' => self::faker()->unique()->numberBetween($from, $to)]);
-	}
-	
-	protected function initialize() : self
-	{
-		return $this->beforeInstantiate([self::class, 'beforeInstantiateRoom']);
-	}
-	
-	public static function beforeInstantiateRoom(array $attributes) : array
-	{
-		if(isset($attributes['name']) === false) $attributes['name'] = 'Room ' . $attributes['number'];
-		return $attributes;
 	}
 }

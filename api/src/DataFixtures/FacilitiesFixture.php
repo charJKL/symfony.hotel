@@ -13,4 +13,9 @@ class FacilitiesFixture extends Fixture
 	{
 		FacilityFactory::createMany(20);
 	}
+	
+	public static function byCount(int $from, int $to) : array
+	{
+		return FacilityFactory::randomRange($from, $to);
+	}
 }
