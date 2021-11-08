@@ -74,6 +74,11 @@ final class AccommodationFactory extends ModelFactory
 		return $this->addState(['checkInAt' => $checkInAt, 'checkOutAt'=> $checkOutAt]);
 	}
 	
+	public function withStatus($status) : self
+	{
+		return $this->addState(['status' => $status]);
+	}
+	
 	public function withRooms(array $rooms) : self
 	{
 		return $this->addState(['rooms' => $rooms]);

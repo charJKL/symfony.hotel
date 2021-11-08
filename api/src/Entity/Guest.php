@@ -183,6 +183,7 @@ class Guest implements UserInterface, PasswordAuthenticatedUserInterface
 	{
 		$roles = $this->roles;
 		$roles[] = 'ROLE_USER';
+		$roles[] = 'ROLE_GUEST';
 		return array_unique($roles);
 	}
 	
