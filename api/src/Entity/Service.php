@@ -7,9 +7,9 @@ use App\Repository\ServiceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ApiResource(attributes={ "security" = "is_granted('ROLE_MANAGER')" })
  * @ORM\Entity(repositoryClass=ServiceRepository::class)
  */
-#[ApiResource(security: "is_granted('ROLE_MANAGER')")]
 class Service
 {
     /**

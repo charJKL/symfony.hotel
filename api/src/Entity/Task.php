@@ -2,16 +2,27 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\TaskRepository;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TaskRepository;
+use DateTime;
 
 /**
+ * @ApiResource(
+ * 	collectionOperations = {
+ * 		"get",
+ * 		"post" = { "security" = "is_granted('ROLE_GUEST')", "denormalization_context"={"groups"={"task:create"}} },
+ * 	},
+ * 	itemOperations = {
+ * 		"get",
+ * 	}
+ * )
  * @ORM\Entity(repositoryClass=TaskRepository::class)
  */
-#[ApiResource]
 class Task
 {
     /**
@@ -39,14 +50,16 @@ class Task
     /**
      * @ORM\ManyToOne(targetEntity=Service::class)
      * @ORM\JoinColumn(nullable=false)
+	  * @Groups({"task:create"})
      */
-    private $service;
+	private $service;
 
     /**
      * @ORM\ManyToOne(targetEntity=Room::class)
      * @ORM\JoinColumn(nullable=false)
+	  * @Groups({"task:create"})
      */
-    private $room;
+	private $room;
 
     /**
      * @ORM\ManyToMany(targetEntity=Employee::class)
@@ -57,10 +70,12 @@ class Task
 	const ASSIGNED = 2;
 	const DONE = 3;
 	
-    public function __construct()
-    {
-        $this->employee = new ArrayCollection();
-    }
+	public function __construct()
+	{
+		$this->status = self::CREATED;
+		$this->createTime = new DateTime();
+		$this->employee = new ArrayCollection();
+	}
 
     public function getId(): ?int
     {
