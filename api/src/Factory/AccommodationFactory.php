@@ -74,13 +74,13 @@ final class AccommodationFactory extends ModelFactory
 		return $this->addState(['checkInAt' => $checkInAt, 'checkOutAt'=> $checkOutAt]);
 	}
 	
-	public function withRooms(array $room) : self
+	public function withRooms(array $rooms) : self
 	{
-		return $this->addState(['rooms' => $room]);
+		return $this->addState(['rooms' => $rooms]);
 	}
 	
-	public function withGuests(array $guest) : self
+	public function withGuests(array $guests) : self
 	{
-		return $this->addState(['guests' => $guest]);
+		return $this->addState(['guests' => $guests]);
 	}
 }

@@ -34,6 +34,11 @@ final class FacilityFactory extends ModelFactory
 		self::faker()->addProvider(new FacilityProvider(self::faker()));
 	}
 	
+	protected static function getClass(): string
+	{
+		return Facility::class;
+	}
+	
 	protected function getDefaults(): array
 	{
 		return 
@@ -41,10 +46,5 @@ final class FacilityFactory extends ModelFactory
 			'name' => self::faker()->facility(),
 			'description' => self::faker()->sentence()
 		];
-	}
-
-	protected static function getClass(): string
-	{
-		return Facility::class;
 	}
 }

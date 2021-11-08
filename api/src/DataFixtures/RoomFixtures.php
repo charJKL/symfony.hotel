@@ -1,12 +1,13 @@
 <?php
 namespace App\DataFixtures;
 
-use App\Entity\Room;
+
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Zenstruck\Foundry\RepositoryProxy;
 use App\Factory\RoomFactory;
+use LogicException;
+use RuntimeException;
 
 class RoomFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -26,15 +27,36 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
 		RoomFactory::new()->withFacilities(FacilitiesFixture::byCount(1,5))->withNumber(902)->withName('Bronze south')->create();
 		RoomFactory::new()->withFacilities(FacilitiesFixture::byCount(1,5))->withNumber(903)->withName('Bronze north')->create();
 		
+		RoomFactory::new()->withFacilities(FacilitiesFixture::byCount(1,5))->withNumber(105)->create();
 		RoomFactory::new()->withFacilities(FacilitiesFixture::byCount(1,5))->withNumber(201)->create();
 		RoomFactory::new()->withFacilities(FacilitiesFixture::byCount(1,5))->withNumber(202)->create();
-		RoomFactory::new()->withFacilities(FacilitiesFixture::byCount(1,5))->withNumber(105)->create();
+		RoomFactory::new()->withFacilities(FacilitiesFixture::byCount(1,5))->withNumber(203)->create();
+		RoomFactory::new()->withFacilities(FacilitiesFixture::byCount(1,5))->withNumber(204)->create();
+		RoomFactory::new()->withFacilities(FacilitiesFixture::byCount(1,5))->withNumber(205)->create();
+		RoomFactory::new()->withFacilities(FacilitiesFixture::byCount(1,5))->withNumber(206)->create();
+		RoomFactory::new()->withFacilities(FacilitiesFixture::byCount(1,5))->withNumber(207)->create();
+		RoomFactory::new()->withFacilities(FacilitiesFixture::byCount(1,5))->withNumber(208)->create();
 	}
 	
-	public static function byNumber(int $count = 1, int $number = RepositoryProxy::IS_NOT_NULL) : array
+	public static function get($count = 1)
 	{
-		// TODO this will not work if we want more than 2 exact rooms.
-		$attributes = ['number' => $number];
-		return RoomFactory::randomSet($count, $attributes);
+		return RoomFactory::randomSet($count);
+	}
+	
+	public static function byNumber(...$numbers) : array
+	{
+		$rooms = [];
+		foreach($numbers as $number) 
+		{
+			try
+			{
+				$rooms[] = RoomFactory::find(['number' => $number]);
+			}catch(RuntimeException $e)
+			{
+				throw new LogicException("Room with number `$number` wasn't created.");
+			}
+		}
+		return $rooms;
 	}
 }
+
