@@ -37,7 +37,7 @@ class Task
     private $endTime;
 
     /**
-     * @ORM\OneToOne(targetEntity=Service::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Service::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $service;
@@ -52,7 +52,11 @@ class Task
      * @ORM\ManyToMany(targetEntity=Employee::class)
      */
     private $employee;
-
+	
+	const CREATED = 1;
+	const ASSIGNED = 2;
+	const DONE = 3;
+	
     public function __construct()
     {
         $this->employee = new ArrayCollection();
