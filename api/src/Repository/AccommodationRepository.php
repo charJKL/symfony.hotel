@@ -5,6 +5,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Guest;
 use App\Entity\Accommodation;
+use App\Entity\Room;
 
 /**
  * @method Accommodation|null find($id, $lockMode = null, $lockVersion = null)
@@ -29,6 +30,20 @@ class AccommodationRepository extends ServiceEntityRepository
 		$query->setParameter('id', $guest->getId());
 		return $query->getResult();
 	}
+	
+	/**
+	 * @return Accommodation
+	 */ 
+	public function findCurrentForRoom(int $room_id) : ?Accommodation
+	{
+		$dql = "SELECT a FROM App\\Entity\\Accommodation a JOIN a.rooms r WHERE a.status = :status_check_in AND r.id = :room_id";
+		$query = $this->getEntityManager()->createQuery($dql);
+		$query->setParameter('status_check_in', Accommodation::CHECKED_IN);
+		$query->setParameter('room_id', $room_id);
+		return $query->getOneOrNullResult();
+	}
+	
+	
 	
     // /**
     //  * @return Accommodation[] Returns an array of Accommodation objects
