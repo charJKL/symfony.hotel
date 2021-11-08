@@ -51,7 +51,6 @@ class AccommodationTest extends ApiTestCase
 	
 	public function testConfirmAccommodationRequireLogin()
 	{
-		self::bootKernel();
 		$employee = EmployeeFactory::new()->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::BOOKED)->create();
 		
@@ -59,8 +58,7 @@ class AccommodationTest extends ApiTestCase
 		$this->request(http::PATCH, 'api/accommodations/'.$accommodation->getId(), [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_401_UNAUTHORIZED);
 		
-		$client = self::createApiClient();
-		$client->logIn($employee);
+		$client = self::createApiClient()->logIn($employee);
 		$client->request(http::PATCH, 'api/accommodations/'.$accommodation->getId(), [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
 		
@@ -71,15 +69,13 @@ class AccommodationTest extends ApiTestCase
 	
 	public function testAssignGuestToAccommodation()
 	{
-		self::bootKernel();
 		$employee = EmployeeFactory::new()->create();
 		$guest = GuestFactory::new()->withEmail()->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withGuests([$guest])->create();
 		
 		$guestOne = GuestFactory::new()->withFull()->create();
 		
-		$client = self::createApiClient();
-		$client->logIn($employee);
+		$client = self::createApiClient()->logIn($employee);
 		$client->request(http::PUT, 'api/accommodations/'.$accommodation->getId().'/guests/'.$guestOne->getId(), [], []);
 		$this->assertResponseStatusCodeSame(http::HTTP_204_NO_CONTENT);
 		
@@ -89,14 +85,12 @@ class AccommodationTest extends ApiTestCase
 	
 	public function testRemoveGuestFromAccommodation()
 	{
-		self::bootKernel();
 		$employee = EmployeeFactory::new()->create();
 		$guestOne = GuestFactory::new()->withEmail()->create();
 		$guestTwo = GuestFactory::new()->withEmail()->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withGuests([$guestOne, $guestTwo])->create();
 		
-		$client = self::createApiClient();
-		$client->logIn($employee);
+		$client = self::createApiClient()->logIn($employee);
 		$client->request(http::DELETE, 'api/accommodations/'.$accommodation->getId().'/guests/'.$guestOne->getId(), [], []);
 		$this->assertResponseStatusCodeSame(http::HTTP_204_NO_CONTENT);
 		
@@ -106,15 +100,13 @@ class AccommodationTest extends ApiTestCase
 	
 	public function testAddRoomToAccommodation()
 	{
-		self::bootKernel();
 		$employee = EmployeeFactory::new()->create();
 		$room = RoomFactory::new()->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withRooms([$room])->create();
 
 		$newRoom = RoomFactory::new()->create();
 		
-		$client = self::createApiClient();
-		$client->logIn($employee);
+		$client = self::createApiClient()->logIn($employee);
 		$client->request(http::PUT, 'api/accommodations/'.$accommodation->getId().'/rooms/'.$newRoom->getId(), [], []);
 		$this->assertResponseStatusCodeSame(http::HTTP_204_NO_CONTENT);
 		
@@ -124,14 +116,12 @@ class AccommodationTest extends ApiTestCase
 	
 	public function testRemoveRoomFromAccommodation()
 	{
-		self::bootKernel();
 		$employee = EmployeeFactory::new()->create();
 		$roomOne = RoomFactory::new()->create();
 		$roomTwo = RoomFactory::new()->create();
 		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withRooms([$roomOne, $roomTwo])->create();
 		
-		$client = self::createApiClient();
-		$client->logIn($employee);
+		$client = self::createApiClient()->logIn($employee);
 		$client->request(http::DELETE, 'api/accommodations/'.$accommodation->getId().'/rooms/'.$roomOne->getId(), [], []);
 		$this->assertResponseStatusCodeSame(http::HTTP_204_NO_CONTENT);
 		
