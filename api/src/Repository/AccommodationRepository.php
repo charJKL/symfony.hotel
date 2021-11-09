@@ -36,7 +36,7 @@ class AccommodationRepository extends ServiceEntityRepository
 	 */ 
 	public function findCurrentForRoom(int $room_id) : ?Accommodation
 	{
-		$dql = "SELECT a FROM App\\Entity\\Accommodation a JOIN a.rooms r WHERE a.status = :status_check_in AND r.id = :room_id";
+		$dql = "SELECT a FROM App\\Entity\\Accommodation a JOIN a.room r WHERE a.status = :status_check_in AND r.id = :room_id";
 		$query = $this->getEntityManager()->createQuery($dql);
 		$query->setParameter('status_check_in', Accommodation::CHECKED_IN);
 		$query->setParameter('room_id', $room_id);

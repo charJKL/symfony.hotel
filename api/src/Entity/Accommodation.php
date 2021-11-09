@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AccommodationRepository;
 use App\Controller\AccommodationController;
+use PhpParser\Node\Expr\FuncCall;
 
 /**
  * @ApiResource(
@@ -19,9 +20,7 @@ use App\Controller\AccommodationController;
  * 		"get",
  * 		"patch" = { "security" = "is_granted('ROLE_USER')", "denormalization_context"={"groups"={"accommodation:update"}} },
  * 		"add_guests" = { "method" = "PUT", "path" = "/accommodations/{accommodation_id}/guests/{guest_id}", "controller"="App\Controller\AccommodationController::add_guests", "read" = false, "deserialize" = false, "validate" = false, "write" = false },
- * 		"remove_guests" = { "method" = "DELETE", "path" = "/accommodations/{accommodation_id}/guests/{guest_id}", "controller"="App\Controller\AccommodationController::remove_guests", "read" = false, "deserialize" = false, "validate" = false, "write" = false },
- * 		"add_rooms" = { "method" = "PUT", "path" = "/accommodations/{accommodation_id}/rooms/{room_id}", "controller"="App\Controller\AccommodationController::add_rooms", "read" = false, "deserialize" = false, "validate" = false, "write" = false },
- * 		"remove_rooms" = { "method" = "DELETE", "path" = "/accommodations/{accommodation_id}/rooms/{room_id}", "controller"="App\Controller\AccommodationController::remove_rooms", "read" = false, "deserialize" = false, "validate" = false, "write" = false }
+ * 		"remove_guests" = { "method" = "DELETE", "path" = "/accommodations/{accommodation_id}/guests/{guest_id}", "controller"="App\Controller\AccommodationController::remove_guests", "read" = false, "deserialize" = false, "validate" = false, "write" = false }
  * 	}
  * )
  * @ORM\Entity(repositoryClass=AccommodationRepository::class)
@@ -69,11 +68,12 @@ class Accommodation
 	 * @Groups({"accommodation:create"})
 	 */
 	private $peopleAmount;
-	
+
 	/**
-	 * @ORM\ManyToMany(targetEntity="App\Entity\Room")
+	 * @ORM\ManyToOne(targetEntity="App\Entity\Room")
+	 * @ORM\JoinColumn(nullable=false)
 	 */
-	private $rooms;
+	private $room;
 	
 	/**
 	 * @ORM\ManyToMany(targetEntity="App\Entity\Guest", cascade={"persist"})
@@ -89,7 +89,6 @@ class Accommodation
 	public function __construct()
 	{
 		$this->status = self::BOOKED;
-		$this->rooms = new ArrayCollection();
 		$this->guests = new ArrayCollection();
 	}
 
@@ -170,26 +169,14 @@ class Accommodation
         return $this;
     }
 
-    /**
-     * @return Collection|Room[]
-     */
-    public function getRooms(): Collection
+    public function getRoom(): Room
     {
-        return $this->rooms;
+        return $this->room;
     }
 
-    public function addRoom(Room $room): self
+    public function setRoom(Room $room): self
     {
-        if (!$this->rooms->contains($room)) {
-            $this->rooms[] = $room;
-        }
-
-        return $this;
-    }
-
-    public function removeRoom(Room $room): self
-    {
-        $this->rooms->removeElement($room);
+        $this->room = $room;
 
         return $this;
     }

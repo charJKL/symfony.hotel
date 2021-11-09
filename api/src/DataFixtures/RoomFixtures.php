@@ -43,20 +43,15 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
 		return RoomFactory::randomSet($count);
 	}
 	
-	public static function byNumber(...$numbers) : array
+	public static function byNumber($number)
 	{
-		$rooms = [];
-		foreach($numbers as $number) 
+		try
 		{
-			try
-			{
-				$rooms[] = RoomFactory::find(['number' => $number]);
-			}catch(RuntimeException $e)
-			{
-				throw new LogicException("Room with number `$number` wasn't created.");
-			}
+			return RoomFactory::find(['number' => $number]);
+		}catch(RuntimeException $e)
+		{
+			throw new LogicException("Room with number `$number` wasn't created.");
 		}
-		return $rooms;
 	}
 }
 

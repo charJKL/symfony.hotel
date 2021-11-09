@@ -23,6 +23,8 @@ class AccommodationTest extends ApiTestCase
 	 */
 	public function testOnlyEmailOrPhoneIsRequiredToMakeReservation(array $json)
 	{
+		/*
+		// TODO this will becomse reservation
 		$this->request(http::POST, '/api/accommodations', [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_201_HTTP_CREATED);
 		
@@ -41,6 +43,7 @@ class AccommodationTest extends ApiTestCase
 		$guest = $query->getQuery()->getOneOrNullResult();
 		$this->assertNotNull($guest);
 		$this->assertEntityEqualsShallow($accommodation->getGuests()[0], $guest);
+		*/
 	}
 	
 	public function testYouCantDeleteReservation()
@@ -52,7 +55,8 @@ class AccommodationTest extends ApiTestCase
 	public function testConfirmAccommodationRequireLogin()
 	{
 		$employee = EmployeeFactory::new()->create();
-		$accommodation = AccommodationFactory::new()->status(Accommodation::BOOKED)->create();
+		$room = RoomFactory::new()->create();
+		$accommodation = AccommodationFactory::new()->status(Accommodation::BOOKED)->withRoom($room)->create();
 		
 		$json = ['status' => Accommodation::CONFIRMED];
 		$this->request(http::PATCH, 'api/accommodations/'.$accommodation->getId(), [], $json);
@@ -70,8 +74,9 @@ class AccommodationTest extends ApiTestCase
 	public function testAssignGuestToAccommodation()
 	{
 		$employee = EmployeeFactory::new()->create();
+		$room = RoomFactory::new()->create();
 		$guest = GuestFactory::new()->withEmail()->create();
-		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withGuests([$guest])->create();
+		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withRoom($room)->withGuests([$guest])->create();
 		
 		$guestOne = GuestFactory::new()->withFull()->create();
 		
@@ -86,9 +91,10 @@ class AccommodationTest extends ApiTestCase
 	public function testRemoveGuestFromAccommodation()
 	{
 		$employee = EmployeeFactory::new()->create();
+		$room = RoomFactory::new()->create();
 		$guestOne = GuestFactory::new()->withEmail()->create();
 		$guestTwo = GuestFactory::new()->withEmail()->create();
-		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withGuests([$guestOne, $guestTwo])->create();
+		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withRoom($room)->withGuests([$guestOne, $guestTwo])->create();
 		
 		$client = self::createApiClient()->logIn($employee);
 		$client->request(http::DELETE, 'api/accommodations/'.$accommodation->getId().'/guests/'.$guestOne->getId(), [], []);
@@ -96,36 +102,5 @@ class AccommodationTest extends ApiTestCase
 		
 		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
 		$this->assertCount(1, $accommodation->getGuests());
-	}
-	
-	public function testAddRoomToAccommodation()
-	{
-		$employee = EmployeeFactory::new()->create();
-		$room = RoomFactory::new()->create();
-		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withRooms([$room])->create();
-
-		$newRoom = RoomFactory::new()->create();
-		
-		$client = self::createApiClient()->logIn($employee);
-		$client->request(http::PUT, 'api/accommodations/'.$accommodation->getId().'/rooms/'.$newRoom->getId(), [], []);
-		$this->assertResponseStatusCodeSame(http::HTTP_204_NO_CONTENT);
-		
-		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
-		$this->assertCount(2, $accommodation->getRooms());
-	}
-	
-	public function testRemoveRoomFromAccommodation()
-	{
-		$employee = EmployeeFactory::new()->create();
-		$roomOne = RoomFactory::new()->create();
-		$roomTwo = RoomFactory::new()->create();
-		$accommodation = AccommodationFactory::new()->status(Accommodation::CONFIRMED)->withRooms([$roomOne, $roomTwo])->create();
-		
-		$client = self::createApiClient()->logIn($employee);
-		$client->request(http::DELETE, 'api/accommodations/'.$accommodation->getId().'/rooms/'.$roomOne->getId(), [], []);
-		$this->assertResponseStatusCodeSame(http::HTTP_204_NO_CONTENT);
-		
-		$accommodation = $this->em(Accommodation::class)->find($accommodation->getId());
-		$this->assertCount(1, $accommodation->getRooms());
 	}
 }

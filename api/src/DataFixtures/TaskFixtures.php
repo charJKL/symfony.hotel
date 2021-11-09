@@ -22,11 +22,11 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
 	public function load(ObjectManager $manager): void
 	{
 		$accommodation = AccomodationFixtures::byStatus(1, Accommodation::CHECKED_IN)[0];
-		TaskFactory::new()->withService(ServiceFixtures::byCount(1, 1)[0])->withRoom($accommodation->getRooms()[0])->create();
-		TaskFactory::new()->withService(ServiceFixtures::byCount(1, 1)[0])->withRoom($accommodation->getRooms()[0])->create();
+		TaskFactory::new()->withService(ServiceFixtures::byCount(1, 1)[0])->withRoom($accommodation->getRoom())->create();
+		TaskFactory::new()->withService(ServiceFixtures::byCount(1, 1)[0])->withRoom($accommodation->getRoom())->create();
 		
 		$accommodation = AccomodationFixtures::byStatus(1, Accommodation::CHECKED_IN)[0];
-		TaskFactory::new()->withService(ServiceFixtures::byCount(1, 1)[0])->withRoom($accommodation->getRooms()[0])->create();
-		TaskFactory::new()->withService(ServiceFixtures::byCount(1, 1)[0])->withRoom($accommodation->getRooms()[0])->create();
+		TaskFactory::new()->withService(ServiceFixtures::byCount(1, 1)[0])->withRoom($accommodation->getRoom())->create();
+		TaskFactory::new()->withService(ServiceFixtures::byCount(1, 1)[0])->withRoom($accommodation->getRoom())->create();
 	}
 }

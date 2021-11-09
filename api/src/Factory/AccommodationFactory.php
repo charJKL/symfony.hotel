@@ -79,9 +79,9 @@ final class AccommodationFactory extends ModelFactory
 		return $this->addState(['status' => $status]);
 	}
 	
-	public function withRooms(array $rooms) : self
+	public function withRoom($rooms) : self
 	{
-		return $this->addState(['rooms' => $rooms]);
+		return $this->addState(['room' => $rooms]);
 	}
 	
 	public function withGuests(array $guests) : self
