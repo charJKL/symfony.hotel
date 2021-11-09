@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AccommodationRepository;
 use App\Controller\AccommodationController;
-use PhpParser\Node\Expr\FuncCall;
 
 /**
  * @ApiResource(
@@ -51,24 +50,7 @@ class Accommodation
 	 * @Groups({"accommodation:create"})
 	 */
 	private $checkOutAt;
-
-	/**
-	 * @ORM\Column(type="datetime", nullable=true)
-	 */
-	private $bookAt;
 	
-	/**
-	 * @ORM\Column(type="integer", options={"unsigned":true})
-	 * @Groups({"accommodation:create"})
-	 */
-	private $roomsAmount;
-
-	/**
-	 * @ORM\Column(type="integer", options={"unsigned":true})
-	 * @Groups({"accommodation:create"})
-	 */
-	private $peopleAmount;
-
 	/**
 	 * @ORM\ManyToOne(targetEntity="App\Entity\Room")
 	 * @ORM\JoinColumn(nullable=false)
@@ -80,6 +62,11 @@ class Accommodation
 	 * @Groups({"accommodation:create", "accommodation:update"})
 	 */ 
 	private $guests;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Reservation::class, inversedBy="accommodations")
+     */
+    private $reservation;
 	
 	const BOOKED = 0;
 	const CONFIRMED = 1;
@@ -133,42 +120,6 @@ class Accommodation
         return $this;
     }
 
-    public function getBookAt(): ?\DateTimeInterface
-    {
-        return $this->bookAt;
-    }
-
-    public function setBookAt(?\DateTimeInterface $bookAt): self
-    {
-        $this->bookAt = $bookAt;
-
-        return $this;
-    }
-
-    public function getRoomsAmount(): ?int
-    {
-        return $this->roomsAmount;
-    }
-
-    public function setRoomsAmount(int $roomsAmount): self
-    {
-        $this->roomsAmount = $roomsAmount;
-
-        return $this;
-    }
-
-    public function getPeopleAmount(): ?int
-    {
-        return $this->peopleAmount;
-    }
-
-    public function setPeopleAmount(int $peopleAmount): self
-    {
-        $this->peopleAmount = $peopleAmount;
-
-        return $this;
-    }
-
     public function getRoom(): Room
     {
         return $this->room;
@@ -201,6 +152,18 @@ class Accommodation
     public function removeGuest(Guest $guest): self
     {
         $this->guests->removeElement($guest);
+
+        return $this;
+    }
+
+    public function getReservation(): ?Reservation
+    {
+        return $this->reservation;
+    }
+
+    public function setReservation(?Reservation $reservation): self
+    {
+        $this->reservation = $reservation;
 
         return $this;
     }

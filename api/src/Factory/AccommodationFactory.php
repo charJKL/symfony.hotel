@@ -48,8 +48,7 @@ final class AccommodationFactory extends ModelFactory
 			'status' => Accommodation::BOOKED,
 			'checkInAt' => $checkInAt,
 			'checkOutAt' => $checkOutAt,
-			'roomsAmount' => self::faker()->numberBetween(1, 4),
-			'peopleAmount' => self::faker()->numberBetween(1, 4),
+			'room' => RoomFactory::new()
 		];
 	}
 	

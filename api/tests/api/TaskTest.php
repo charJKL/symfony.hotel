@@ -18,7 +18,7 @@ class TaskTest extends ApiTestCase
 		$guest = GuestFactory::new()->withFull()->create();
 		$service = ServiceFactory::new()->create();
 		$room = RoomFactory::new()->create();
-		$accommodation = AccommodationFactory::new()->withStatus(Accommodation::CHECKED_IN)->withGuests([$guest])->withRooms($room)->create();
+		$accommodation = AccommodationFactory::new()->withStatus(Accommodation::CHECKED_IN)->withGuests([$guest])->withRoom($room)->create();
 		
 		$json = ['service' => self::getIri($service), 'room' => self::getIri($room)];
 		
