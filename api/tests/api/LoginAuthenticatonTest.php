@@ -18,10 +18,15 @@ class LoginAuthenticatonTest extends ApiTestCase
 		
 		$json = ['login' => 'mark.admin', 'password' => 'admin-super-password'];
 		
-		$this->request(http::POST, '/login', [], $json);
+		$response = $this->request(http::POST, '/login', [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_200_OK);
+		$array = $response->toArray();
+		print_r($array);
+		
+		
 	}
 	
+	/*
 	public function testGuestCantLogInOnEmptyPassword()
 	{
 		$guest = GuestFactory::new()->withEmail('fake@email.com')->create();
@@ -89,4 +94,5 @@ class LoginAuthenticatonTest extends ApiTestCase
 		$this->request(http::POST, '/api/guests/login', [], $json);
 		$this->assertResponseStatusCodeSame(http::HTTP_401_UNAUTHORIZED);
 	}
+	*/
 }
