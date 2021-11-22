@@ -31,18 +31,17 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            provider: employee_provider
-            stateless: true
+            lazy: true
+            provider: users_provider
+            user_checker: App\Security\GuestIsCheckInChecker
 
             json_login:
               check_path: /login
               username_path: login
               password_path: password
-              success_handler: lexik_jwt_authentication.handler.authentication_success
-              failure_handler: lexik_jwt_authentication.handler.authentication_failure
             
-            jwt: ~
-            
+            custom_authenticators:
+              - App\Security\GuestAuthenticator
             
             logout: 
               path: /logout
