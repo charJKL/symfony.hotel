@@ -1,0 +1,6 @@
+FROM mysql:8
+
+COPY ./docker/init-database.sql /docker-entrypoint-initdb.d/
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["mysqld"]

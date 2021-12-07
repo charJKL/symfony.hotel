@@ -32,7 +32,9 @@ services:
         target: /var/www
 
   database:
-    image: mysql:8
+    build:
+      context: ./database
+      dockerfile: ./dockerfile.mysql8
     ports:
       - target: 3306
         published: 5306
@@ -44,9 +46,6 @@ services:
         target: /var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: a3dcb4d229de6fde0db5686dee47145d
-      MYSQL_DATABASE: hotel
-      MYSQL_USER: hotel_user
-      MYSQL_PASSWORD: cb7e0f3ec835a213b005c4424c8d5775
 
 volumes:
   symfony-hotel:
