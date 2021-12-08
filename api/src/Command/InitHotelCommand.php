@@ -38,30 +38,13 @@ class InitHotelCommand extends Command
 		
 		$output->writeln("Load data fixtures:");
 		$command = $this->getApplication()->find('doctrine:fixtures:load');
-		$args = new ArrayInput(['--n' => true]);
+		$args = new ArrayInput(['--no-interaction' => true]); // we can't change global cli options, those must be set on main command
 		$run = $command->run($args, $output);
 		if($run !== Command::SUCCESS)
 		{
 			$output->write("Can't load database fixtures");
 			return Command::FAILURE;
 		}
-		
-		$output->writeln("Load schema migration for unit test:");
-		$command = $this->getApplication()->find('doctrine:migrations:migrate');
-		$args = ['--e' => 'test'];
-		$run = $command->run(new ArrayInput($args), $output);
-		if($run !== Command::SUCCESS)
-		{
-			$output->write("Can't load database imgrations for unit testing.");
-			return Command::FAILURE;
-		}
-		
-		
-		
-		
 		return Command::SUCCESS;
 	}
-	
-	
-	
 }
