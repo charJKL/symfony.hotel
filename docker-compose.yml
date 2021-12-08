@@ -16,6 +16,8 @@ services:
       - type: bind
         source: ./api
         target: /var/www
+      - /dev/null:/var/www/.env.local
+      - /dev/null:/var/www/.env.test.local
 
   web:
     build:
