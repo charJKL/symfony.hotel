@@ -22,16 +22,15 @@ services:
   web:
     build:
       context: ./web
-      dockerfile: ./dockerfile.apache+php8
+      dockerfile: ./dockerfile.node+next
     ports:
-      - target: 80
+      - target: 3000
         published: 3000
         protocol: tcp
         mode: host
     volumes:
-      - type: bind
-        source: ./web
-        target: /var/www
+      - ./web/pages:/usr/src/pages
+      - ./web/styles:/usr/scr/styles
 
   database:
     build:
