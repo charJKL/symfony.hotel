@@ -21,13 +21,17 @@
 	display: flex;
 	flex-flow: row nowrap;
 	background: rgba(0, 0, 0, .9);
-	
+}
+.navDiv
+{
+	flex: 1 0 0;
+	display: flex;
+	justify-content: center;
 }
 .navLink
 {
-	flex: 1 0 0;
+	margin: 5px;
 	color: #fff;
-	padding: 10px 10px;
 }
 .navLink:hover .navLinkMain
 { 
