@@ -30,6 +30,7 @@ services:
         mode: host
     volumes:
       - ./web/pages:/usr/src/pages
+      - ./web/components:/usr/src/components
       - ./web/styles:/usr/src/styles
       - ./web/public:/usr/src/public
 
