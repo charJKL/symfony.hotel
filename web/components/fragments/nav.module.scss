@@ -1,0 +1,34 @@
+@use "../../styles/vars.scss";
+
+.nav
+{
+	width: 1080px;
+	margin: 0px auto;
+	display: flex;
+	flex-flow: row nowrap;
+	background: rgba(0, 0, 0, .9);
+}
+.navDiv
+{
+	flex: 1 0 0;
+	display: flex;
+	justify-content: center;
+}
+.navLink
+{
+	margin: 5px;
+	color: #fff;
+}
+.navLink:hover .navLinkMain
+{ 
+	color: #f00;
+}
+.navLinkMain
+{
+	letter-spacing: 1px;
+	font: small-caps 20px / 20px vars.$font;
+}
+.navLinkSub
+{
+	font: normal 12px / 12px vars.$font;
+}
