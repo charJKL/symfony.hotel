@@ -1,0 +1,15 @@
+@use "../../styles/vars.scss";
+
+.header
+{
+	width: 1080px;
+	margin: 0px auto;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+}
+.headerLink 
+{
+	display: block;
+	margin: 10px 0px;
+}
