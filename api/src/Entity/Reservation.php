@@ -8,13 +8,14 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @ApiResource(
  * 	collectionOperations = {
  * 		"get",
- * 		"post"
+ * 		"post" = {"denormalization_context" = {"groups" = {"reservation:write"} } }
  * 	},
  * 	itemOperations = {
  * 		"get",
@@ -39,11 +40,13 @@ class Reservation
 
     /**
      * @ORM\Column(type="datetime")
+	  * @Groups({"reservation:write"})
      */
     private $checkInAt;
 
     /**
      * @ORM\Column(type="datetime")
+	  * @Groups({"reservation:write"})
      */
     private $checkOutAt;
 	
@@ -54,16 +57,19 @@ class Reservation
 
 	/**
 	 * @ORM\Column(type="string")
+	 * @Groups({"reservation:write"})
 	 */
 	private $contact;
 	
 	/**
 	 * @ORM\Column(type="integer", options={"unsigned":true})
+	 * @Groups({"reservation:write"})
 	 */
 	private $roomsAmount;
 
 	/**
 	 * @ORM\Column(type="integer", options={"unsigned":true})
+	 * @Groups({"reservation:write"})
 	 */
 	private $peopleAmount;
 
