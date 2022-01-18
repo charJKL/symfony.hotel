@@ -1,0 +1,21 @@
+@use "./vars.scss";
+
+html
+{
+	height: 100%;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	font-family: vars.$font;
+	background:radial-gradient(vars.$background-color-one, vars.$background-color-two);
+}
+*{
+	box-sizing: border-box;
+}
+a{
+	color: inherit;
+	text-decoration: none;
+}
