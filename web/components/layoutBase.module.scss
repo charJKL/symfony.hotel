@@ -1,0 +1,18 @@
+
+.main
+{
+	@extend .layoutFragment;
+	flex: 1 0 0;
+}
+
+.layoutFragment
+{
+	width: 100%;
+}
+
+@media (min-width: 1080px)
+{
+	.layoutFragment{
+		width: 1080px;
+	}
+}

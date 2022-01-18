@@ -1,9 +1,10 @@
 @use "../../styles/vars.scss";
+@use "../layoutBase.module.scss";
 
 .header
 {
-	width: 1080px;
-	margin: 0px auto;
+	@extend .layoutFragment;
+	flex: 0 0 auto;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: center;

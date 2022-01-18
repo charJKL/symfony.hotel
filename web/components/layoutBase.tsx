@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import Header from "./fragments/header";
 import Nav from "./fragments/nav";
 import Footer from "./fragments/footer";
+import style from "./layoutBase.module.scss";
 
 type LayoutBaseProps =
 {
@@ -14,7 +15,7 @@ const LayoutBase = ({children}: LayoutBaseProps) : JSX.Element =>
 		<>
 			<Header />
 			<Nav />
-			<main>{ children }</main>
+			<main className={style.main}>{ children }</main>
 			<Footer />
 		</>
 	)

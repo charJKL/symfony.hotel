@@ -1,9 +1,10 @@
 @use "../../styles/vars.scss";
+@use "../layoutBase.module.scss";
 
 .nav
 {
-	width: 1080px;
-	margin: 0px auto;
+	@extend .layoutFragment;
+	flex: 0 0 auto;
 	display: flex;
 	flex-flow: row nowrap;
 	background: rgba(0, 0, 0, .9);
@@ -16,7 +17,7 @@
 }
 .navLink
 {
-	margin: 5px;
+	margin: 10px 0px;
 	color: #fff;
 }
 .navLink:hover .navLinkMain
