@@ -1,39 +1,33 @@
-import { useFormik } from "formik";
-import axios from 'axios';
+import { useForm, SubmitHandler } from "react-hook-form";
+import instance from "../../axios";
 
-type FormInputs =
+type ReservationInputs =
 {
 	peopleAmount: number;
-	roomAmount: number;
+	roomsAmount: number;
 	contact: string;
 	checkInAt: string;
 	checkOutAt: string;
 }
 
 const Reservation = () : JSX.Element => {
-	const form = useFormik({
-		initialValues: {
-			peopleAmount: 0,
-			roomsAmount: 0,
-			contact: "",
-			checkInAt: "",
-			checkOutAt: "",
-		},
-		onSubmit: (values) => {
-			console.log(values);
-			axios.post("http://localhost:8000/api/reservations", values)
-				.then((r) => { console.log(r); })
-				.catch((r) => { console.error(r); })
-		}
-	});
+	const { register, handleSubmit } = useForm<ReservationInputs>();
+	
+	const handleReservation = (data: ReservationInputs) =>
+	{
+		console.log(data);
+		instance.post("/reservations", data)
+			.then((r) => { console.log(r); })
+			.catch((r) => { console.error(r); })
+	}
 	
 	return (
-		<form onSubmit={form.handleSubmit}>
-			<input name="peopleAmount" type="number" onChange={form.handleChange} value={form.values.peopleAmount} />
-			<input name="roomsAmount" type="number" onChange={form.handleChange} value={form.values.roomsAmount} />
-			<input name="contact" type="text" onChange={form.handleChange} value={form.values.contact} />
-			<input name="checkInAt" type="date" onChange={form.handleChange} value={form.values.checkInAt} />
-			<input name="checkOutAt" type="date" onChange={form.handleChange} value={form.values.checkOutAt} />
+		<form onSubmit={handleSubmit(handleReservation)}>
+			<input type="number" {...register('peopleAmount', {required: true})} />
+			<input type="number" {...register('roomsAmount', {required: true})} />
+			<input type="text" {...register('contact', {required: true})} />
+			<input type="date" {...register('checkInAt', {required: true})} />
+			<input type="date" {...register('checkOutAt', {required: true})} />
 			<input type="submit" />
 		</form>
 	)
