@@ -9,7 +9,6 @@ COPY . /usr/src
 
 # install dependences
 RUN npm install
-RUN npm install --save-dev @swc/cli @swc/core @swc/core-linux-musl
 
 EXPOSE 3000
 ENTRYPOINT ["npm", "run" ,"dev"]
