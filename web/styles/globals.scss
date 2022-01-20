@@ -14,7 +14,7 @@ body {
 	font-family: vars.$font;
 	background:radial-gradient(vars.$background-color-one, vars.$background-color-two);
 }
-body > div 
+body > #__next 
 {
 	display: flex;
 	flex-flow: column nowrap;
