@@ -1,25 +1,28 @@
-import React, { useRef, useState } from "react";
-import { useForm, Controller, SubmitHandler, ControllerRenderProps } from "react-hook-form";
+import { style } from "@mui/system";
+import React, { InputHTMLAttributes, useRef, useState } from "react";
+import { ForwardedRef } from "react";
+import { forwardRef } from "react";
+import { useForm, Controller, SubmitHandler, UseFormRegister } from "react-hook-form";
 import instance from "../../axios";
 import styles from "./reservation.module.scss";
-
-import DateAdapter from '@mui/lab/AdapterDayjs';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import pl_PL from "dayjs/locale/pl";
-import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';
-import TextField from '@mui/material/TextField';
-import { MuiTextFieldProps } from "@mui/lab/internal/pickers/PureDateInput";
 
 type ReservationInputs =
 {
 	peopleAmount: number;
 	roomsAmount: number;
 	contact: string;
-	range: DateRange<Date>;
+	checkInAt: Date | null;
+	checkOutAt: Date | null;
 }
 
+type InputPropsBase = 
+{
+	label?: string;
+}
+type InputProps = InputPropsBase & InputHTMLAttributes<HTMLInputElement>;
+
 const Reservation = () : JSX.Element => {
-	const values: ReservationInputs = {peopleAmount: 1, roomsAmount: 1, contact: "", range: [null, null]};
+	const values: ReservationInputs = {peopleAmount: 1, roomsAmount: 1, contact: "", checkInAt: null, checkOutAt: null};
 	const { register, handleSubmit, control, formState: {errors}} = useForm<ReservationInputs>({defaultValues: values});
 	
 	const handleReservation : SubmitHandler<ReservationInputs> = (data: ReservationInputs) =>
@@ -30,31 +33,25 @@ const Reservation = () : JSX.Element => {
 			.catch((r) => { console.error(r); })
 	}
 	
-	const [value, setValue] = React.useState<DateRange<Date>>([null, null]);
-	//<input type="date" {...register('checkInAt', {required: true})} />
-	//<input type="date" {...register('checkOutAt', {required: true})} />
-	// { errors.peopleAmount && <span>Invalid people amount</span>}
-	
-	const dateRangePickerInputs = (startProps : MuiTextFieldProps, endProps: MuiTextFieldProps) => (
-		<React.Fragment>
-			<TextField variant="filled" {...startProps} />
-			<TextField variant="filled" {...endProps} />
-		</React.Fragment> )
-	const dateRangePicker = ({value, ref, onChange}: ControllerRenderProps<ReservationInputs, "range">) => (
-		<DateRangePicker className="XXXXXXXXXXXXXXXXXXXX" startText="Przyjazd:" endText="Wyjazd:" mask="mm.dd.yyyy" renderInput={dateRangePickerInputs} value={value} onChange={value => onChange(value)} inputRef={ref}/>
-	)
-	
+	type InputRefType = InputProps & ReturnType<UseFormRegister<ReservationInputs>>
+	const Input = ({className, label, type, name, onChange, onBlur}: InputRefType, ref: ForwardedRef<HTMLInputElement> ): JSX.Element =>
+	{
+		return (<div className={[styles.inputDiv, className].join(' ')}>
+			<label className={styles.inputLabel}>{label}</label>
+			<input className={styles.inputInput} ref={ref} type={type} name={name} onChange={onChange} onBlur={onBlur} />
+		</div>);
+	}
+	const InputRef = forwardRef<HTMLInputElement, InputRefType>(Input);
 	return (
 		<div className={styles.reservation}>
 			<h1 className={styles.formHeader}>Dokonaj rezerwacji:</h1>
 			<form className={styles.form} onSubmit={handleSubmit(handleReservation)}>
 				<fieldset className={styles.fields}>
-					<TextField className={styles.peopleAmount} variant="filled" label="Ilość osób:" placeholder="1" type="number" min="1" required {...register('peopleAmount', {required: true, min: 1, max: 5})} />
-					<TextField className={styles.roomsAmount} variant="filled" label="Ilość pokoi:" type="number" min="1" required {...register('roomsAmount', {required: true})} />
-					<TextField className={styles.contact} variant="filled" label="Email lub telefon:" type="text" required {...register('contact', {required: true})} />
-					<LocalizationProvider dateAdapter={DateAdapter} locale={pl_PL}>
-						<Controller name="range" control={control} rules={{ required: true }} render={({field}) => dateRangePicker(field) } />
-					</LocalizationProvider>
+					<InputRef className={styles.peopleAmount} type="number" min="1" label="Ilość osób:" required {...register('peopleAmount', {required: true, min: 1})} />
+					<InputRef className={styles.roomsAmount} type="number" min="1" label="Ilość pokoi:" required {...register('roomsAmount', {required: true, min: 1})} />
+					<InputRef className={styles.contact} type="text" label="Email lub telefon:" required {...register('contact', {required: true})} />
+					<InputRef className={styles.checkInAt} type="date" label="Przyjazd:" required {...register('checkInAt', {required: true})} />
+					<InputRef className={styles.checkOutAt} type="date" label="Wymeldowanie:" required {...register('checkOutAt', {required: true})} />
 				</fieldset>
 				<fieldset className={styles.button}>
 					<input className={styles.submit} value="Rezerwuj" type="submit" />
