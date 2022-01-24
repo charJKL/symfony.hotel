@@ -20,6 +20,7 @@ $input-focus-border-color: rgb(0, 0, 255);
 }
 .fieldset
 {
+	position: relative;
 	border: 0px;
 	padding: 0px;
 	margin: 0px;
@@ -97,4 +98,38 @@ $input-focus-border-color: rgb(0, 0, 255);
 	height: 100%;
 	font: bold 16px / 100wh vars.$font;
 	cursor: pointer;
+}
+.waiting
+{
+	width: 50%;
+	height: 50%;
+	margin: auto;
+}
+
+.response
+{
+	$padding: 10px;
+	position: absolute;
+	z-index: 2;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: center;
+	left: $padding; top: $padding;
+	width: calc(100% - $padding * 2);
+	height: calc(100% - $padding * 2);
+}
+.response button
+{
+	margin-left: auto;
+}
+.error
+{
+	@extend .response;
+	background: #eee;
+}
+.success
+{
+	@extend .response;
+	background: #eee;
 }
