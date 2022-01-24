@@ -1,6 +1,8 @@
 @use "../../styles/vars.scss";
 
-
+$input-border-color: #000;
+$input-invalid-border-color: #f00;
+$input-focus-border-color: rgb(0, 0, 255);
 .reservation
 {
 	margin: 10px 10px 0px 10px;
@@ -14,6 +16,7 @@
 {
 	display: flex;
 	flex-flow: row nowrap;
+	border: solid 1px $input-border-color;
 }
 .fieldset
 {
@@ -45,6 +48,10 @@
 	font: 11px / 11px vars.$font;
 	white-space: nowrap;
 	overflow: hidden;
+	&.invalid
+	{
+		color: $input-invalid-border-color;
+	}
 }
 .inputInput
 {
@@ -52,9 +59,15 @@
 	height: 50px;
 	font: 16px / 16px vars.$font;
 	padding: 5px 0px 0px 10px;
+	border: solid 1px $input-border-color;
+	background: #fefefe;
 	&:focus{
 		outline: none;
-		border: solid 1px vars.$input-focus-border-color;
+		border: solid 1px $input-focus-border-color;
+	}
+	&.invalid
+	{
+		border: solid 1px $input-invalid-border-color;
 	}
 }
 .peopleAmount
