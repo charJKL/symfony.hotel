@@ -4,6 +4,7 @@ import { forwardRef } from "react";
 import { useForm, SubmitHandler, UseFormRegister, FieldError } from "react-hook-form";
 import instance from "../../axios";
 import styles from "./reservation.module.scss";
+import Modal from "../ui/modal";
 
 type ReservationInputs =
 {
@@ -20,13 +21,16 @@ type InputPropsBase =
 	invalid?: FieldError;
 }
 type InputProps = InputPropsBase & InputHTMLAttributes<HTMLInputElement>;
+type FormStatus = 
+{
+	status: "idle" | "waiting" | "error" | "saved";
+	detail?: string;
+}
 
 const Reservation = () : JSX.Element => 
 {	
-	const {register, handleSubmit, control, formState: {errors}} = useForm<ReservationInputs>({});
-	const [isWaititng, setWaiting] = useState<boolean>(false);
-	const [wasError, setError] = useState<string>("asd");
-	const [wasSuccess, setSuccess] = useState<boolean>(false);
+	const {register, handleSubmit, reset, formState: {errors}} = useForm<ReservationInputs>({});
+	const [form, setForm] = useState<FormStatus>({status: "idle"});
 
 	const peopleAmountRegisterConfig = {required: 'Ilość osób jest obowiązkowa:', min: 1, valueAsNumber: true};
 	const roomsAmountRegisterConfig = {required: 'Ilość pokoi jest obowiązkowa:', min: 1, valueAsNumber: true};
@@ -39,33 +43,28 @@ const Reservation = () : JSX.Element =>
 		console.log(data);
 		try
 		{
-			setWaiting(true);
+			setForm({status: "waiting"});
 			const response = await instance.post("/reservations", data);
 			if(response.status === 201)
 			{
-				setSuccess(true);
+				setForm({status: "saved"});
+				reset();
 			}
 		}
 		catch(e)
 		{
-			setError(e);
-		}
-		finally
-		{
-			setWaiting(false);
+			setForm({status: "error", detail: e});
 		}
 	}
 	
-	const closeResponseHandler = () =>
+	const disposeModalHandle = () =>
 	{
-		setError("");
-		setSuccess(false);
+		setForm({status: "idle"});
 	}
 	
 	type InputRefType = InputProps & ReturnType<UseFormRegister<ReservationInputs>>
 	const Input = ({className, label, onChange, onBlur, invalid, ...props}: InputRefType, ref: ForwardedRef<HTMLInputElement> ): JSX.Element =>
 	{
-		console.log(invalid);
 		const isInvalid = invalid != undefined ? styles.invalid : '';
 		const text = invalid != undefined ? invalid.message : label;
 		const styleDiv = [styles.inputDiv, className, isInvalid].join(' ');
@@ -76,18 +75,25 @@ const Reservation = () : JSX.Element =>
 			<input className={styleInput} {...props} ref={ref} onChange={onChange} onBlur={onBlur} />
 		</div>);
 	}
-	
 	const InputRef = forwardRef<HTMLInputElement, InputRefType>(Input);
-	const errorMessage = wasError ? <ErrorElement message={wasError} dispose={closeResponseHandler}/> : null;
-	const successMessage = wasSuccess ? <SuccesElement dispose={closeResponseHandler}/> : null;
-	const button = isWaititng ? <img className={styles.waiting} src="/waiting.svg" /> : 'Rezerwuj';
+	
+	const Button = () : JSX.Element =>
+	{
+		switch(form.status)
+		{
+			case "idle": return <button className={styles.submit} type="submit">Rezerwuj</button>
+			case "waiting": return <button className={styles.submit} type="submit"><img className={styles.waiting} src="/waiting.svg" /></button>
+			case "error": return <button className={styles.submit} type="submit" disabled>Rezerwuj</button>
+			case "saved": return <button className={styles.submit} type="submit" disabled>Rezerwuj</button>
+		}
+	}
 	return (
 		<div className={styles.reservation}>
 			<h1 className={styles.formHeader}>Dokonaj rezerwacji:</h1>
 			<form className={styles.form} onSubmit={handleSubmit(handleReservation)}>
 				<fieldset className={styles.fields}>
-					{errorMessage}
-					{successMessage}
+					<Modal content={form.detail} visible={form.status == "error"} onClose={disposeModalHandle}/>
+					<Modal content="Twoja rezerwacja została zapisana" visible={form.status == "saved"} onClose={disposeModalHandle} />
 					<InputRef className={styles.peopleAmount} type="number" min="1" label="Ilość osób:" {...register('peopleAmount', peopleAmountRegisterConfig)} invalid={errors.peopleAmount} />
 					<InputRef className={styles.roomsAmount} type="number" min="1" label="Ilość pokoi:" {...register('roomsAmount', roomsAmountRegisterConfig)} invalid={errors.roomsAmount} />
 					<InputRef className={styles.contact} type="text" label="Email lub telefon:" {...register('contact', contactRegisterConfig)} invalid={errors.contact} />
@@ -95,43 +101,11 @@ const Reservation = () : JSX.Element =>
 					<InputRef className={styles.checkOutAt} type="date" label="Wymeldowanie:" {...register('checkOutAt', checkOutAtRegisterConfig)} invalid={errors.checkOutAt} />
 				</fieldset>
 				<fieldset className={styles.button}>
-					<button className={styles.submit} type="submit">
-						{button}
-					</button>
+					{ <Button /> }
 				</fieldset>
 			</form>
 		</div>
 	)
 }
-
-type ErrorElementProps =
-{
-	message: string;
-	dispose: () => void;
-}
-const ErrorElement = ({message, dispose}: ErrorElementProps) : JSX.Element =>
-{
-	return (
-		<div className={styles.error}>
-			<p>{message}</p>
-			<button onClick={dispose}>Spróbuje ponownie.</button>
-		</div>
-	)
-}
-
-type SuccessElementProps =
-{
-	dispose: () => void;
-}
-const SuccesElement = ({dispose}: SuccessElementProps) : JSX.Element =>
-{
-	return (
-		<div className={styles.success}>
-			<p>Rezerwacja zostałą zapisana. Skontaktujemy się z panią.</p>
-			<button onClick={dispose}>Rozumiem, dziękuje.</button>
-		</div>
-	)
-}
-
 
 export default Reservation;

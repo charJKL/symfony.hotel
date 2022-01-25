@@ -98,6 +98,9 @@ $input-focus-border-color: rgb(0, 0, 255);
 	height: 100%;
 	font: bold 16px / 100wh vars.$font;
 	cursor: pointer;
+	&:disabled{
+		cursor: auto;
+	}
 }
 .waiting
 {
