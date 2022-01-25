@@ -1,0 +1,41 @@
+@use "../../styles/vars.scss";
+$frame: 10px;
+$inner-padding: 10px;
+
+.modal
+{
+	position: absolute;
+	z-index: 2;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: center;
+	left: $frame; top: $frame;
+	width: calc(100% - $frame * 2);
+	min-height: calc(100% - $frame * 2);
+	background: #eee;
+}
+.close
+{
+	position: absolute;
+	top: $inner-padding; 
+	right: $inner-padding;
+	border: none;
+	font: bold 11px / 11px vars.$font;
+	cursor: pointer;
+	&:hover
+	{ 
+		color: #111; 
+	}
+}
+.button
+{
+	position: absolute;
+	bottom: $inner-padding; 
+	right: $inner-padding;
+	cursor: pointer;
+}
+.content
+{
+	margin: $inner-padding;
+}
