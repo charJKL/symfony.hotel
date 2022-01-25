@@ -10,12 +10,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
  * 	collectionOperations = {
- * 		"get",
- * 		"post" = {"denormalization_context" = {"groups" = {"reservation:write"} } }
+ * 		"get" = {"normalization_context" = {"groups" = {"reservation:read"}}},
+ * 		"post" = {"denormalization_context" = {"groups" = {"reservation:write"}}}
  * 	},
  * 	itemOperations = {
  * 		"get",
@@ -40,13 +41,15 @@ class Reservation
 
     /**
      * @ORM\Column(type="datetime")
-	  * @Groups({"reservation:write"})
+	  * @Groups({"reservation:read","reservation:write"})
+	  * @Assert\GreaterThanOrEqual("today", message="Nie możesz zameldować się wcześniej niż {{ compared_value }}")
      */
     private $checkInAt;
 
     /**
      * @ORM\Column(type="datetime")
-	  * @Groups({"reservation:write"})
+	  * @Groups({"reservation:read","reservation:write"})
+     * @Assert\GreaterThanOrEqual(propertyPath = "checkInAt", message="Nie możesz się wymeldować wcześniej niż {{ compared_value }}.")
      */
     private $checkOutAt;
 	
@@ -58,18 +61,21 @@ class Reservation
 	/**
 	 * @ORM\Column(type="string")
 	 * @Groups({"reservation:write"})
+	 * @Assert\NotBlank(message = "Podaj kontakt")
 	 */
 	private $contact;
 	
 	/**
 	 * @ORM\Column(type="integer", options={"unsigned":true})
 	 * @Groups({"reservation:write"})
+	 * @Assert\Positive(message = "Liczba przewidywanych pokoi jest zła")
 	 */
 	private $roomsAmount;
 
 	/**
 	 * @ORM\Column(type="integer", options={"unsigned":true})
 	 * @Groups({"reservation:write"})
+	 * @Assert\Positive(message = "Liczba przewidywanych gości jest zła.")
 	 */
 	private $peopleAmount;
 
