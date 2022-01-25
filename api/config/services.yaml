@@ -30,3 +30,7 @@ services:
     App\OpenApi\GuestEndpointsDocs:
         decorates: 'api_platform.openapi.factory'
         arguments: ['@App\OpenApi\GuestEndpointsDocs.inner']
+    
+    App\DataPersister\ReservationDataPersister:
+      bind:
+        $decoratedDataPersister: '@api_platform.doctrine.orm.data_persister'
