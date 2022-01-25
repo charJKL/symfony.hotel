@@ -29,7 +29,7 @@ type FormStatus =
 
 const Reservation = () : JSX.Element => 
 {	
-	const {register, handleSubmit, reset, formState: {errors}} = useForm<ReservationInputs>({});
+	const {register, handleSubmit, reset, setError, formState: {errors}} = useForm<ReservationInputs>({});
 	const [form, setForm] = useState<FormStatus>({status: "idle"});
 
 	const peopleAmountRegisterConfig = {required: 'Ilość osób jest obowiązkowa:', min: 1, valueAsNumber: true};
@@ -53,6 +53,16 @@ const Reservation = () : JSX.Element =>
 		}
 		catch(e)
 		{
+			if(e.response.status === 422)
+			{
+				setForm({status: "error", detail: "Rezerwacja zawiera błędy, popraw wskazane pola."});
+				for(const v of e.response.data.violations)
+				{
+					const error = {type: "manual", message: v.message};
+					setError(v.propertyPath, error);
+				}
+				return;
+			}
 			setForm({status: "error", detail: e});
 		}
 	}
