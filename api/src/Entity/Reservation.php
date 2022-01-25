@@ -49,7 +49,7 @@ class Reservation
     /**
      * @ORM\Column(type="datetime")
 	  * @Groups({"reservation:read","reservation:write"})
-     * @Assert\GreaterThanOrEqual(propertyPath = "checkInAt", message="Nie możesz się wymeldować wcześniej niż {{ compared_value }}.")
+     * @Assert\GreaterThan(propertyPath = "checkInAt", message="Nie możesz się wymeldować wcześniej niż {{ compared_value }}.")
      */
     private $checkOutAt;
 	
