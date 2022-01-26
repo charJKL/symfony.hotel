@@ -1,9 +1,11 @@
 import type { NextPage } from 'next';
+import { useContext } from 'react';
 import Head from 'next/head'
 import Header from "./fragments/header";
 import Nav from "./fragments/nav";
 import Footer from "./fragments/footer";
 import style from "./layoutBase.module.scss";
+import AuthenticationContext from '../services/AuthenticationContext';
 
 type LayoutBaseProps =
 {
@@ -12,6 +14,8 @@ type LayoutBaseProps =
 
 const LayoutBase = ({children}: LayoutBaseProps) : JSX.Element => 
 {
+	const {isAuthenticated} = useContext(AuthenticationContext);
+	
 	return (
 		<>
 			<Head>
@@ -21,8 +25,10 @@ const LayoutBase = ({children}: LayoutBaseProps) : JSX.Element =>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			
+			
 			<Header />
 			<Nav />
+			<div>is: {isAuthenticated && "is indded"}</div>
 			<main className={style.main}>{ children }</main>
 			<Footer />
 		</>
