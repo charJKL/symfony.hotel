@@ -1,0 +1,9 @@
+@use "../../styles/vars.scss";
+
+%fragment
+{
+	position: relative;
+	width: 100%;
+	
+	@media (min-width: vars.$rwd-breakpoint-desktop) { width: vars.$rwd-breakpoint-desktop; }
+}

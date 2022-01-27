@@ -1,15 +1,15 @@
 @use "../../styles/vars.scss";
-@use "../layoutBase.module.scss";
+@use "./fragments.module.scss";
 
 .nav
 {
-	@extend .layoutFragment;
+	@extend %fragment;
 	flex: 0 0 auto;
 	display: flex;
 	flex-flow: column nowrap;
 	background: rgba(0, 0, 0, .9);
 	
-	@media (min-width: 530px) { flex-flow: row nowrap; }
+	@media (min-width: vars.$rwd-breakpoint-mobile) { flex-flow: row nowrap; }
 }
 .navDiv
 {

@@ -1,9 +1,9 @@
 @use "../../styles/vars.scss";
-@use "../layoutBase.module.scss";
+@use "./fragments.module.scss";
 
 .footer
 {
-	@extend .layoutFragment;
+	@extend %fragment;
 	flex: 0 0 auto;
 	padding: 5px 0px 0px 0px;
 	margin: 0px 0px 5px 0px;
