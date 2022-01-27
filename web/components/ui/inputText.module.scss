@@ -1,0 +1,15 @@
+@use "./input.module.scss";
+
+.outer
+{
+	@extend %outer;
+}
+.label
+{
+	@extend %label;
+}
+.input
+{
+	@extend %input;
+}
+

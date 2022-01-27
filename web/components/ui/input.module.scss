@@ -1,39 +1,40 @@
 @use "../../styles/vars.scss";
 
-$input-border-color: #000;
-$input-invalid-border-color: #f00;
-$input-focus-border-color: rgb(0, 0, 255);
+$height: 50px;
+$background: #fefefe;
+$border-color: #000;
+$focus-border-color: rgb(0, 0, 255);
+$invalid-font-color: #f00;
+$invalid-border-color: #f00;
 
-.inputDiv
+%outer
 {
 	position: relative;
+	height: $height;
+	overflow: hidden;
+	background: $background;
+	border: solid 1px #000;
+
+	&.invalid { border: solid 1px $border-color; }
+	&:focus-within{ border: solid 1px $focus-border-color; }
 }
-.inputLabel
+%label
 {
 	position: absolute;
-	top: 3px; left: 5px;
+	top: 4px; left: 5px;
 	font: 11px / 11px vars.$font;
 	white-space: nowrap;
-	overflow: hidden;
-	&.invalid
-	{
-		color: $input-invalid-border-color;
-	}
+	
+	.invalid & { color: $invalid-font-color; }
 }
-.inputInput
+%input
 {
 	width: 100%;
 	height: 50px;
 	font: 16px / 16px vars.$font;
-	padding: 5px 0px 0px 10px;
-	border: solid 1px $input-border-color;
-	background: #fefefe;
-	&:focus{
-		outline: none;
-		border: solid 1px $input-focus-border-color;
-	}
-	&.invalid
-	{
-		border: solid 1px $input-invalid-border-color;
-	}
+	padding: 6px 0px 0px 10px;
+	border: none;
+	outline: none;
+	
+	&:focus{ outline: none; }
 }
