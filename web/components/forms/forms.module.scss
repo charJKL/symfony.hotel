@@ -1,0 +1,17 @@
+@use "../../styles/vars.scss";
+@use "../ui/input.module.scss";
+
+%form
+{
+	display: flex;
+	flex-flow: row nowrap;
+	border: solid 1px input.$border-color;
+}
+%fieldset
+{
+	position: relative;
+	display: block;
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+}

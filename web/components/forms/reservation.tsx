@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import instance from "../../axios";
 import styles from "./reservation.module.scss";
 import Modal from "../ui/modal";
-import Input from "../ui/input";
+import InputText from "../ui/inputText";
 
 type ReservationInputs =
 {
@@ -82,11 +82,11 @@ const Reservation = () : JSX.Element =>
 				<fieldset className={styles.fields}>
 					<Modal content={form.detail} visible={form.status == "error"} onClose={disposeModalHandle}/>
 					<Modal content="Twoja rezerwacja została zapisana" visible={form.status == "saved"} onClose={disposeModalHandle} />
-					<Input className={styles.peopleAmount} type="number" min="1" label="Ilość osób:" {...register('peopleAmount', peopleAmountRegisterConfig)} invalid={errors.peopleAmount} />
-					<Input className={styles.roomsAmount} type="number" min="1" label="Ilość pokoi:" {...register('roomsAmount', roomsAmountRegisterConfig)} invalid={errors.roomsAmount} />
-					<Input className={styles.contact} type="text" label="Email lub telefon:" {...register('contact', contactRegisterConfig)} invalid={errors.contact} />
-					<Input className={styles.checkInAt} type="date" label="Przyjazd:" {...register('checkInAt', checkInAtRegisterConfig)} invalid={errors.checkInAt} />
-					<Input className={styles.checkOutAt} type="date" label="Wymeldowanie:" {...register('checkOutAt', checkOutAtRegisterConfig)} invalid={errors.checkOutAt} />
+					<InputText className={styles.peopleAmount} type="number" min="1" label="Ilość osób:" {...register('peopleAmount', peopleAmountRegisterConfig)} invalid={errors.peopleAmount} />
+					<InputText className={styles.roomsAmount} type="number" min="1" label="Ilość pokoi:" {...register('roomsAmount', roomsAmountRegisterConfig)} invalid={errors.roomsAmount} />
+					<InputText className={styles.contact} type="text" label="Email lub telefon:" {...register('contact', contactRegisterConfig)} invalid={errors.contact} />
+					<InputText className={styles.checkInAt} type="date" label="Przyjazd:" {...register('checkInAt', checkInAtRegisterConfig)} invalid={errors.checkInAt} />
+					<InputText className={styles.checkOutAt} type="date" label="Wymeldowanie:" {...register('checkOutAt', checkOutAtRegisterConfig)} invalid={errors.checkOutAt} />
 				</fieldset>
 				<fieldset className={styles.button}>
 					{ <Button /> }

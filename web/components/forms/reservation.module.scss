@@ -1,5 +1,5 @@
 @use "../../styles/vars.scss";
-@use "../ui/input.module.scss";
+@use "./forms.module.scss";
 
 .reservation
 {
@@ -12,28 +12,18 @@
 }
 .form
 {
-	display: flex;
-	flex-flow: row nowrap;
-	border: solid 1px input.$input-border-color;
-}
-.fieldset
-{
-	position: relative;
-	border: 0px;
-	padding: 0px;
-	margin: 0px;
-	display: block;
+	@extend %form;
 }
 .fields
 {
-	@extend .fieldset;
+	@extend %fieldset;
 	display: flex;
 	flex-flow: row wrap;
 	flex: 1 0 0;
 }
 .button
 {
-	@extend .fieldset;
+	@extend %fieldset;
 	flex: 0 0 100px;
 }
 .peopleAmount
@@ -61,7 +51,6 @@
 	flex: 0 0 100%;
 	@media (min-width: vars.$rwd-breakpoint-mobile) { flex: 0 0 50%; }
 }
-
 .submit
 {
 	width: 100%;
