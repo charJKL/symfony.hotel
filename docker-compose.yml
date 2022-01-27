@@ -7,6 +7,7 @@ services:
       dockerfile: ./dockerfile.apache+php8
     depends_on:
       - database
+    hostname: api
     ports:
       - target: 80
         published: 8000
@@ -23,6 +24,7 @@ services:
     build:
       context: ./web
       dockerfile: ./dockerfile.node+next
+    hostname: web
     ports:
       - target: 3000
         published: 3000
@@ -35,6 +37,7 @@ services:
     build:
       context: ./database
       dockerfile: ./dockerfile.mysql8
+    hostname: database
     ports:
       - target: 3306
         published: 5306
@@ -49,3 +52,7 @@ services:
 
 volumes:
   symfony-hotel:
+  
+networks:
+  default:
+    name: symfony
