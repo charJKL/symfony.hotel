@@ -1,15 +1,8 @@
-import type { NextPage, GetStaticProps } from 'next'
+import type { NextPage, GetStaticProps, GetStaticPaths } from 'next'
+import Link from 'next/link'
 import Reservation from '../components/forms/reservation'
-import instance from "../services/axios";
 import apiBuild from "../services/ApiBuild";
-
-type Offer =
-{
-	id: number;
-	name: number;
-	description: string;
-	image: string;
-}
+import type Offer from "../entities/Offer";
 
 type IndexProps = 
 {
@@ -20,9 +13,12 @@ const Index = ({offers} : IndexProps) : JSX.Element => {
 	
 	const Offer = ({id, name, description, image} : Offer) =>
 	{
-		return (<div>{name}</div>)
+		return (
+			<div>
+				<Link href={`offer/${id}`} ><a>{name}</a></Link>
+			</div>
+		)
 	}
-	console.log(offers);
 	return (
 		<>
 			<Reservation/>
@@ -42,6 +38,5 @@ export const getStaticProps : GetStaticProps = async (context) => {
 		}
 	};
 }
-
 
 export default Index;
