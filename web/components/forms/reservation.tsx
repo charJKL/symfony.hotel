@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import instance from "../../axios";
+import instance from "../../services/axios";
 import styles from "./reservation.module.scss";
 import Modal from "../ui/modal";
 import InputText from "../ui/inputText";
