@@ -1,0 +1,33 @@
+@use "./input.module.scss";
+
+$shift-in-top: 7px;
+
+.outer
+{
+	@extend %outer;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+.label
+{
+	@extend %label;
+}
+.input
+{
+	@extend %input;
+	position: relative;
+	top: $shift-in-top;
+	width: 22px;
+	height: 22px;
+	margin: 0px 0px 0px 5px;
+	padding: 0px;
+	cursor: pointer;
+}
+.text
+{
+	position: relative;
+	top: $shift-in-top;
+	margin: 0px 0px 0px 5px;
+	cursor: pointer;
+}
