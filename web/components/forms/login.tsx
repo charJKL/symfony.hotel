@@ -2,7 +2,8 @@ import React, { useState} from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import instance from "../../axios";
 import styles from "./login.module.scss";
-import Input from "../ui/input";
+import InputText from "../ui/inputText";
+import InputCheckbox from "../ui/inputCheckbox";
 
 type LoginInputs =
 {
@@ -11,7 +12,12 @@ type LoginInputs =
 	remember: boolean;
 }
 
-const Login = () : JSX.Element =>
+type LoginProps =
+{
+	className?: string;
+}
+
+const Login = ({className} : LoginProps) : JSX.Element =>
 {
 	const {register, handleSubmit, reset, setError, formState: {errors}} = useForm<LoginInputs>({});
 	//const [form, setForm] = useState<FormStatus>({status: "idle"});
@@ -25,12 +31,17 @@ const Login = () : JSX.Element =>
 		console.log(data);
 	}
 	
+	const stylesForm = [styles.form, className].join(" ");
 	return (
-		<form className={styles.form} onSubmit={handleSubmit(loginSubmitHandler)}>
-			<Input className={styles.login} type="text" label="Numer pokoju, email, telefon:" { ...register('login', loginRegisterConfig)} invalid={errors.login} />
-			<Input className={styles.form} type="password" label="Hasło:" { ...register('password', passwordRegisterConfig)} invalid={errors.password} />
-			<Input className={styles.rememberMe} type="checkbox" label="Zapamiętaj mnie" { ...register('remember', rememberRegisterConfig)} />
-			<button>Zaloguj</button>
+		<form className={stylesForm} onSubmit={handleSubmit(loginSubmitHandler)}>
+			<fieldset className={styles.inputs}>
+				<InputText className={styles.login} label="Numer pokoju, email, telefon:" { ...register('login', loginRegisterConfig)} invalid={errors.login} />
+				<InputText className={styles.password} type="password" label="Hasło:" { ...register('password', passwordRegisterConfig)} invalid={errors.password} />
+				<InputCheckbox className={styles.remember} label="Zapamiętać logowanie?" text="Tak, zapamiętaj mnie." { ...register('remember', rememberRegisterConfig)} />
+			</fieldset>
+			<fieldset className={styles.button}>
+				<button className={styles.submit}>Zaloguj</button>
+			</fieldset>
 		</form>
 	)
 }

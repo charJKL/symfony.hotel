@@ -1,0 +1,39 @@
+@use "../../styles/vars.scss";
+@use "./forms.module.scss";
+
+.form
+{
+	@extend %form;
+}
+.inputs
+{
+	@extend %fieldset;
+	flex: 1 0 0;
+	display: flex;
+	flex-flow: row wrap;
+}
+.button
+{
+	@extend %fieldset;
+	flex: 0 0 100px;
+}
+.login
+{
+	flex: 0 0 100%;
+	@media (min-width: vars.$rwd-breakpoint-mobile) { flex: 1 0 0; }
+}
+.password
+{
+	flex: 0 0 100%;
+	@media (min-width: vars.$rwd-breakpoint-mobile) { flex: 1 0 0; }
+}
+.remember
+{
+	flex: 0 0 100%;
+	@media (min-width: vars.$rwd-breakpoint-mobile) { flex: 0 0 200px; }
+}
+.submit
+{
+	width: 100%;
+	height: 100%;
+}
