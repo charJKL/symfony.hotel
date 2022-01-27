@@ -5,6 +5,7 @@ import Head from 'next/head'
 import Header from "./fragments/header";
 import Nav from "./fragments/nav";
 import Authentication from "./fragments/authentication";
+import Main from "./fragments/main";
 import Footer from "./fragments/footer";
 import style from "./layoutBase.module.scss";
 
@@ -29,7 +30,7 @@ const LayoutBase = ({children}: LayoutBaseProps) : JSX.Element =>
 			<Header />
 			<Nav />
 			<Authentication />
-			<main className={style.main}>{ children }</main>
+			<Main>{ children }</Main>
 			<Footer />
 		</>
 	)

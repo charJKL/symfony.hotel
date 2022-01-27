@@ -1,9 +1,8 @@
 @use "../../styles/vars.scss";
 @use "./fragments.module.scss";
 
-.authentication
+.main
 {
 	@extend %fragment;
-	margin: 3px 0px 10px 0px;
-	padding: 0px 10px;
+	flex: 1 0 0;
 }
