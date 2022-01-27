@@ -21,7 +21,7 @@ const InputCheckbox = <T,>({className, label, name, text, onChange, onBlur, inva
 	return (
 		<div className={stylesOuter}>
 			<span className={styles.label}>{ labelText }</span>
-			<input className={styles.input} type="checkbox" {...props} id={id} ref={ref} onChange={onChange} onBlur={onBlur} />
+			<input className={styles.input} type="checkbox" {...props} id={id} name={name} ref={ref} onChange={onChange} onBlur={onBlur} />
 			<label className={styles.text} htmlFor={id}>{ text }</label>
 		</div>
 	)
