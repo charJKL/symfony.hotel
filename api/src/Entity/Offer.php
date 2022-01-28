@@ -23,6 +23,11 @@ class Offer
      * @ORM\Column(type="string", length=255)
      */
     private $name;
+	 
+	 /**
+	  * @ORM\Column(type="string", length=255)
+	  */
+	 private $slug;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -71,6 +76,18 @@ class Offer
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

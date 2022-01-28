@@ -7,6 +7,7 @@ use App\Repository\OfferRepository;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
+use App\Factory\Utils\SlugProvider;
 
 /**
  * @extends ModelFactory<Offer>
@@ -28,6 +29,12 @@ use Zenstruck\Foundry\Proxy;
  */
 final class OfferFactory extends ModelFactory
 {
+	public function __construct()
+	{
+		parent::__construct();
+		self::faker()->addProvider(new SlugProvider(self::faker()));
+	}
+	
 	protected static function getClass(): string
 	{
 		return Offer::class;
@@ -35,15 +42,17 @@ final class OfferFactory extends ModelFactory
 	
 	protected function getDefaults(): array
 	{
+		$name = self::faker()->words(2, true);
 		return [
-			'name' => self::faker()->words(2),
+			'name' => $name,
+			'slug' => self::faker()->slug($name),
 			'description' => self::faker()->sentences(3, true),
 		];
 	}
 	
 	public function withName(string $name) : self
 	{
-		return $this->addState(['name' => $name]);
+		return $this->addState(['name' => $name, 'slug' => self::faker()->slug($name)]);
 	}
 	
 	public function withImage(string $path) : self
