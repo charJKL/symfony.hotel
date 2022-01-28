@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\OfferRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiProperty;
 
 /**
  * @ApiResource()
@@ -13,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Offer
 {
     /**
+	  * @ApiProperty(identifier = false)
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -25,7 +27,8 @@ class Offer
     private $name;
 	 
 	 /**
-	  * @ORM\Column(type="string", length=255)
+	  * @ApiProperty(identifier = true)
+	  * @ORM\Column(type="string", unique=true, length=255)
 	  */
 	 private $slug;
 
