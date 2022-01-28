@@ -1,26 +1,35 @@
-
+@use "../styles//vars.scss";
 
 .offers
 {
 	display: flex;
-	flex: row wrap;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: stretch;
+	gap: 10px 20px;
+	margin: 10px 10px 0px;
 }
 .offer
 {
 	position: relative;
-	flex: 0 0 1;
-	border: solid 5px #000;
+	flex: 0 0 100%;
+	height: 230px;
 	overflow: hidden;
 	display: flex;
-	flex-flow: row nowrap;
+	flex-flow: column nowrap;
+	justify-content: flex-end;
 	align-items: center;
-	justify-content: center;
-	background: red;
-	height: 290px;
+	background: #fefefe;
+	border: solid 5px #000;
+	@media (min-width: vars.$rwd-breakpoint-mobile) { flex: 0 0 270px; }
+	&:hover{ 
+		cursor: pointer;
+		border: solid 5px #00f;
+	}
 }
 .image
 {
-	align-self: flex-end;
+	
 }
 .name
 {
