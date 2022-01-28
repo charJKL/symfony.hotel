@@ -12,10 +12,10 @@ type IndexProps =
 
 const Index : NextPage<IndexProps> = ({offers} : IndexProps) : JSX.Element => {
 	
-	const Offer = ({id, name, description, image} : Offer) =>
+	const Offer = ({slug, name, image} : Offer) =>
 	{
 		return (
-			<Link href={`offer/${id}`} >
+			<Link href={`offer/${slug}`} >
 				<a className={styles.offer}>
 					<img className={styles.image} src={`http://localhost:8000/${image}`} />
 					<h1 className={styles.name}>{ name }</h1>

@@ -15,13 +15,13 @@ const Offer = ({id, name, description} : OfferProps) => {
 
 type OfferParams = 
 {
-	id: string;
+	slug: string;
 }
 
 export const getStaticProps : GetStaticProps<OfferParams> = async ({params}) => {
 	if(params === undefined) return { notFound: true };
 	
-	const offer = await apiBuild.get(`/offers/${params.id}.json`);
+	const offer = await apiBuild.get(`/offers/${params.slug}.json`);
 	
 	return {
 		props: {
@@ -33,7 +33,7 @@ export const getStaticProps : GetStaticProps<OfferParams> = async ({params}) => 
 export const getStaticPaths: GetStaticPaths = async () => {
 	const offers = await apiBuild.get("/offers.json");
 	
-	const paths = offers.data.map((offer : Offer) => ({params: {id: offer.id.toString()}}));
+	const paths = offers.data.map((offer : Offer) => ({params: {slug: offer.slug}}));
 	
 	return { paths, fallback: false };
 }
