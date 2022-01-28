@@ -32,6 +32,11 @@ services:
     App\OpenApi\GuestEndpointsDocs:
         decorates: 'api_platform.openapi.factory'
         arguments: ['@App\OpenApi\GuestEndpointsDocs.inner']
+        
+    App\OpenApi\TokenEndpointDocs:
+        decorates: 'api_platform.openapi.factory'
+        arguments: ['@App\OpenApi\TokenEndpointDocs.inner']
+        
     
     App\DataPersister\ReservationDataPersister:
       bind:

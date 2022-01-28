@@ -31,17 +31,21 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            lazy: true
+            stateless: true
             provider: users_provider
             user_checker: App\Security\GuestIsCheckInChecker
 
             json_login:
-              check_path: /login
+              check_path: /api/token
               username_path: login
               password_path: password
+              success_handler: lexik_jwt_authentication.handler.authentication_success
+              failure_handler: lexik_jwt_authentication.handler.authentication_failure
             
-            custom_authenticators:
-              - App\Security\GuestAuthenticator
+            jwt: ~
+            
+            #custom_authenticators:
+            #  - App\Security\GuestAuthenticator
             
             logout: 
               path: /logout
@@ -55,6 +59,6 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/api, roles: ROLE_USER }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+      - { path: ^/api, roles: PUBLIC_ACCESS }
+      - { path: ^/api/token, roles: PUBLIC_ACCESS }
+      - { path: ^/, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
