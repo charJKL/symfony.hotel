@@ -14,6 +14,14 @@ const Offer = ({id, name, description} : OfferProps) => {
 	);
 }
 
+export const getStaticPaths: GetStaticPaths = async () => {
+	const offers = await apiBuild.get("/offers.json");
+	
+	const paths = offers.data.map((offer : Offer) => ({params: {slug: offer.slug}}));
+	
+	return { paths, fallback: false };
+}
+
 type OfferParams = 
 {
 	slug: string;
@@ -29,14 +37,6 @@ export const getStaticProps : GetStaticProps<OfferParams> = async ({params}) => 
 			...offer.data
 		}
 	};
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-	const offers = await apiBuild.get("/offers.json");
-	
-	const paths = offers.data.map((offer : Offer) => ({params: {slug: offer.slug}}));
-	
-	return { paths, fallback: false };
 }
 
 export default Offer;

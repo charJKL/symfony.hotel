@@ -16,17 +16,18 @@ const Offer = ({id, name, description} : OfferProps) => {
 	);
 }
 
-type OfferParams = 
-{
-	id: string;
-}
+export const getStaticProps : GetStaticProps = async () => {
+	const offer : Offer = {
+		id: 0,
+		slug: 'rainy-autumn',
+		name: "Rainy autumn",
+		description: "Lorem ipsum more text",
+		image: "/"
+	}
 
-export const getStaticProps : GetStaticProps<OfferParams> = async () => {
-	const offer = await apiBuild.get(`/offers/sunny-winter.json`);
-	
 	return {
 		props: {
-			...offer.data
+			...offer
 		}
 	};
 }
