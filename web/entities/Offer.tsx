@@ -3,7 +3,7 @@ declare type Offer =
 {
 	id: number;
 	slug: string;
-	name: number;
+	name: string;
 	description: string;
 	image: string;
 }
