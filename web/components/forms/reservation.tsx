@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import instance from "../../services/axios";
+import Api, { isApiException } from "../../services/Api";
 import styles from "./reservation.module.scss";
 import Modal from "../ui/modal";
 import InputText from "../ui/inputText";
@@ -37,26 +37,29 @@ const Reservation = () : JSX.Element =>
 		try
 		{
 			setForm({status: "waiting"});
-			const response = await instance.post("/reservations", data);
+			const response = await Api.post("/reservations", data);
 			if(response.status === 201)
 			{
 				setForm({status: "saved"});
 				reset();
 			}
 		}
-		catch(e)
+		catch(e: unknown)
 		{
-			if(e.response.status === 422)
+			if(isApiException(e))
 			{
-				setForm({status: "error", detail: "Rezerwacja zawiera błędy, popraw wskazane pola."});
-				for(const v of e.response.data.violations)
+				if(e.response?.status === 422)
 				{
-					const error = {type: "manual", message: v.message};
-					setError(v.propertyPath, error);
+					setForm({status: "error", detail: "Rezerwacja zawiera błędy, popraw wskazane pola."});
+					for(const v of e.response.data.violations)
+					{
+						const error = {type: "manual", message: v.message};
+						setError(v.propertyPath, error);
+					}
+					return;
 				}
-				return;
+				setForm({status: "error", detail: e.message});
 			}
-			setForm({status: "error", detail: e});
 		}
 	}
 	
