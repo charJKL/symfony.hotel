@@ -1,5 +1,6 @@
-import React, { useState} from "react";
+import React, { useState, useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import AuthenticationContext from "../../services/AuthenticationContext";
 import Api, { isApiException } from "../../services/Api";
 import styles from "./login.module.scss";
 import InputText from "../ui/inputText";
@@ -26,6 +27,7 @@ type FormStatus =
 
 const Login = ({className} : LoginProps) : JSX.Element =>
 {
+	const {setAuthenticated} = useContext(AuthenticationContext);
 	const {register, handleSubmit, reset, setError, formState: {errors}} = useForm<LoginInputs>({});
 	const [form, setForm] = useState<FormStatus>({status: "idle"});
 	
@@ -42,7 +44,7 @@ const Login = ({className} : LoginProps) : JSX.Element =>
 			if(response.status === 200)
 			{
 				setForm({status: "logged"});
-				alert('zalogowano do systemu');
+				setAuthenticated(response.data.token);
 				reset();
 			}
 		}

@@ -1,7 +1,6 @@
-import { type } from "node:os";
 import { createContext, Dispatch, SetStateAction } from "react";
 
-type AuthenticationContextData = boolean;
+type AuthenticationContextData = string;
 type AuthenticationContextType = 
 {
 	isAuthenticated: AuthenticationContextData;
@@ -10,7 +9,7 @@ type AuthenticationContextType =
 
 const AuthenticationContextDefault = 
 {
-	isAuthenticated: false,
+	isAuthenticated: "",
 	setAuthenticated: () => {}
 }
 
