@@ -1,9 +1,18 @@
 import Link from "next/link";
+import { useContext } from "react";
+import { AuthenticationContext } from "../../services/useAuthenticationService";
 import styles from "./services.module.scss";
 
 
 const Services = () : JSX.Element =>
 {
+	const {deleteAuthentitation} = useContext(AuthenticationContext);
+	
+	const handleLogout = () =>
+	{
+		deleteAuthentitation();
+	}
+	
 	return (
 		<nav className={styles.nav} >
 			<div className={styles.navDiv}>
@@ -47,6 +56,11 @@ const Services = () : JSX.Element =>
 						<div className={styles.navLinkMain} >Budzik</div>
 					</a>
 				</Link>
+			</div>
+			<div className={styles.navDiv}>
+					<a className={styles.navLink} href="#" onClick={handleLogout}>
+						<div className={styles.navLinkMain} >Wyloguj</div>
+					</a>
 			</div>
 		</nav>
 	)
