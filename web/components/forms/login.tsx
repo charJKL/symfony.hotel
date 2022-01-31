@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import AuthenticationContext from "../../services/AuthenticationContext";
+import { AuthenticationContext } from "../../services/useAuthenticationService";
 import Api, { isApiException } from "../../services/Api";
 import styles from "./login.module.scss";
 import InputText from "../ui/inputText";

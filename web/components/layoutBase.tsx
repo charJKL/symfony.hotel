@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { useContext } from 'react';
-import AuthenticationContext from '../services/AuthenticationContext';
+import { AuthenticationContext } from '../services/useAuthenticationService';
 import Head from 'next/head'
 import Header from "./fragments/header";
 import Nav from "./fragments/nav";

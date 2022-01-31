@@ -2,7 +2,7 @@ import '../styles/globals.scss';
 import { useState } from 'react';
 import type { AppProps } from 'next/app';
 import LayoutBase from '../components/layoutBase';
-import AuthenticationContext, {AuthenticationContextData} from '../services/AuthenticationContext';
+import useAuthenticationService, { AuthenticationContext } from '../services/useAuthenticationService';
 
 
 // Redecalare forwardRef
@@ -14,8 +14,7 @@ declare module "react" {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-	const [isAuthenticated, setAuthenticated] = useState<AuthenticationContextData>(false);
-	const AuthenticationContextValue = {isAuthenticated, setAuthenticated};
+	const AuthenticationContextValue = useAuthenticationService();
 	
 	return (
 		<AuthenticationContext.Provider value={AuthenticationContextValue}>
