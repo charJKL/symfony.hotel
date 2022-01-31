@@ -1,0 +1,35 @@
+@use "../../styles/vars.scss";
+@use "./fragments.module.scss";
+
+.nav
+{
+	@extend %fragment;
+	flex: 0 0 auto;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	background: rgba(73, 73, 73, 1);
+	
+	@media (min-width: vars.$rwd-breakpoint-mobile) { width: calc(100% - 30px); }
+	@media (min-width: vars.$rwd-breakpoint-desktop) { width: calc(vars.$rwd-breakpoint-desktop - 30px); }
+}
+.navDiv
+{
+	flex: 1 0 0;
+	display: flex;
+	justify-content: center;
+	margin: 0px 10px;
+}
+.navLink
+{
+	margin: 10px 0px;
+	color: #fff;
+}
+.navLinkMain
+{
+	letter-spacing: 1px;
+	white-space: nowrap;
+	font: 12px / 12px vars.$font;
+	
+	&:hover{ color: #f00; }
+}

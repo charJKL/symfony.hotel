@@ -4,6 +4,7 @@ import AuthenticationContext from '../services/AuthenticationContext';
 import Head from 'next/head'
 import Header from "./fragments/header";
 import Nav from "./fragments/nav";
+import Services from "./fragments/services";
 import Authentication from "./fragments/authentication";
 import Main from "./fragments/main";
 import Footer from "./fragments/footer";
@@ -18,6 +19,7 @@ const LayoutBase = ({children}: LayoutBaseProps) : JSX.Element =>
 {
 	const {isAuthenticated} = useContext(AuthenticationContext);
 	
+	const user = isAuthenticated ? <Services /> : <Authentication /> ;
 	return (
 		<>
 			<Head>
@@ -29,7 +31,7 @@ const LayoutBase = ({children}: LayoutBaseProps) : JSX.Element =>
 			
 			<Header />
 			<Nav />
-			<Authentication />
+			{ user }
 			<Main>{ children }</Main>
 			<Footer />
 		</>
